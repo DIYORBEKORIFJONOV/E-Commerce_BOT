@@ -1,0 +1,123 @@
+syntax = "proto3";
+
+option go_package = "github.com/diyorbek/E-Commerce_BoT/product-service/pkg/protos/gen/product;productpb";
+
+
+service ProductService{
+    rpc CreateProduct(CreateProductReq)returns(MainProduct);
+    rpc AddModel(AddModelReq)returns(Product);
+    rpc GetAllProduct(GetProductsReq)returns(GetProductsRes);
+    rpc UpdateProduct(UpdateProductReq)returns(Product);
+    rpc DeleteProduct(DeleteProductReq)returns(GeneralResponseProduct);
+    rpc CreateCategory(CreateCategoryReq)returns(GeneralResponseProduct);
+    rpc GetAllCategory(GetCategoriesReq)returns(GetcategoriesRes);
+    rpc UpdateCategory(UpdateCategoryReq)returns(GeneralResponseProduct);
+    rpc DeleteCategory(DeleteCategoryReq)returns(GeneralResponseProduct);
+    rpc UpdateName(UpdateNameReq)returns(GeneralResponseProduct);
+    rpc GetMainProduct(GetMainProductReq) returns (GetMainProductRes);
+}
+
+
+message GetMainProductReq {
+    string field = 1;
+    string value  = 2;
+}
+
+
+message MainProduct  {
+    string mainProductId = 1;
+    string  category  = 2;
+    string name = 3;
+}
+
+message GetMainProductRes {
+    repeated MainProduct products = 1;
+    int64 count = 2;
+}
+
+message UpdateNameReq{
+    string name=1;
+    string newname=2;
+}
+
+message Product{
+    string productId=1;
+    string description=4;
+    string colour=5;
+    int32 size=6;
+    float price=7;
+    int32 quantity=8;
+    string createdat=9;
+    string updatedat=10;
+    string photourl=11;
+    string mainProductId = 12;
+}
+
+message CreateProductReq{
+    string name=2;
+    string category=3;
+}
+
+
+message AddModelReq {
+    string mainProductId=1;
+    string description=4;
+    string colour=5;
+    int32 size=6;
+    float price=7;
+    int32 quantity=8;
+    string photourl=11;
+}
+
+
+message GetProductsReq{
+    string field=1;
+    string value=2;
+    int64 page=3;
+    int64 limit=4;
+}
+
+message GetProductsRes{
+    repeated Product product=1;
+    int64 count=2;
+}
+
+message UpdateProductReq{
+    string productId=1;
+    string description=4;
+    string colour=5;
+    int32 size=6;
+    float price=7;
+    int32 quantity=8;
+    string photoUrl = 9;
+}
+
+message DeleteProductReq{
+    string productId=1;
+    bool is_deleted=4;
+}
+
+message GeneralResponseProduct{
+    bool status=1;
+    string message=2;
+}
+
+message CreateCategoryReq{
+    string category=1;
+}
+
+message GetCategoriesReq{}
+
+message GetcategoriesRes{
+    repeated CreateCategoryReq category=1;
+    int64 count=2;
+}
+
+message UpdateCategoryReq{
+    string category=1;
+    string newcategory=2;
+}
+
+message DeleteCategoryReq{
+    string category=1;
+}
