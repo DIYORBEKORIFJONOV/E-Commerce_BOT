@@ -1,0 +1,96 @@
+syntax="proto3";
+
+option go_package="./orderproduct";
+
+service OrderService{
+    rpc CreateOrder(CreateOrderReq)returns(Order);
+    rpc GetAllOrders(GetAllOrdersReq)returns(GetAllOrdersRes);
+    rpc OrderCompleted(UpdateOrderReq)returns(Order);
+    rpc AddProductsToCart(AddProducts2Cart)returns(GeneralOrderResponse);
+    rpc GetCart(GetCartReq)returns(Cart);
+    rpc UpdateCart(UpdateCartReq)returns(Cart);
+    rpc DeleteCart(DeleteCartReq)returns(GeneralOrderResponse);
+    rpc DeleteCartProducts(DeleteProductsfromCartReq)returns(Cart);
+}
+
+message Order{
+    string orderId=1;
+    Cart cartId=2;
+    Location cordination=3;
+    string status=4;
+    string userId=5;
+    string comment=6;
+    string contactNumber=7;
+    string createdat=8;
+    string updated=9;
+}
+
+message Location{
+    string longtitude=1;
+    string latitude=2;
+}
+
+
+message ProductOrder{
+    string productId=1;
+    int64 quantity=2;
+    float price=3;
+}
+
+message Cart{
+    repeated ProductOrder products=1;
+    float totalPrice=2;
+    string userId=3;
+
+}
+
+message CreateOrderReq{
+    Cart cartId=2;
+    Location cordination=3;
+    string userId=5;
+    string comment=6;
+    string contactNumber=7;
+}
+
+message GetAllOrdersReq{
+    string userId=1;
+}
+
+message GetAllOrdersRes{
+    repeated Order orders=1;
+}
+
+message UpdateOrderReq{
+    string orderId=1;
+}
+
+message GeneralOrderResponse{
+    bool status=1;
+    string message=2;
+}
+
+message AddProducts2Cart{
+    string userId=1;
+    string productId=2;
+    float price=3;
+    int64 quantity=4;
+}
+
+message GetCartReq{
+    string userId=1;
+}
+
+message UpdateCartReq{
+    string userId=2;
+    string productId=3;
+    int64 quantity=4;
+}
+
+message DeleteProductsfromCartReq{
+    string userId=2;
+    string ProductId=3;
+}
+
+message DeleteCartReq{
+  string userId=1;
+}
