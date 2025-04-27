@@ -15,7 +15,6 @@ func RegisterRouter(orderUC *usecaseorder.OrderUseCaseIml) *gin.Engine {
 
 	orderHandler := handler.NewOrderHandler(orderUC)
 
-
 	r := gin.Default()
 	r.Use(middleware.CorsMiddleware())
 	r.Use(middleware.IPFilterMiddleware([]string{"127.0.0.1"}))
