@@ -1,8 +1,9 @@
 package usecaseorder
 
 import (
-	models "api_gateway/internal/entity/order"
 	"context"
+
+	models "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/entity/order"
 )
 
 type orderService interface {

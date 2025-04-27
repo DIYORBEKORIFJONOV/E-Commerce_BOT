@@ -1,30 +1,32 @@
+// file: internal/http/handler/product.go
 package handler
 
 import (
-	productentity "api_gateway/internal/entity/product"
-	"api_gateway/internal/infastructure/minao"
-	productusecase "api_gateway/internal/usecase/product"
 	"net/http"
+	"strconv"
+
+	productentity "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/entity/product"
+	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/infastructure/minao"
+	productusecase "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/usecase/product"
 
 	"github.com/gin-gonic/gin"
 )
 
+// ProductHandler хранит зависимости для product-эндпоинтов
 type ProductHandler struct {
-	product *productusecase.ProductUseCaseIml
-    minioPhoto *minao.Client
+    product    *productusecase.ProductUseCaseIml
+    minioPhoto *minao1.Client
 }
 
 func NewProductHandler(
-    product *productusecase.ProductUseCaseIml,
-    minioClient *minao.Client,
+    productUC *productusecase.ProductUseCaseIml,
+    minioClient *minao1.Client,
 ) *ProductHandler {
     return &ProductHandler{
-        product:    product,
+        product:    productUC,
         minioPhoto: minioClient,
     }
 }
-
-
 
 // CreateProduct godoc
 // @Summary      Create a new product
@@ -39,27 +41,17 @@ func NewProductHandler(
 // @Router       /products [post]
 func (p *ProductHandler) CreateProduct(c *gin.Context) {
     var req productentity.CreateProductReq
-
     if err := c.ShouldBindJSON(&req); err != nil {
-        c.JSON(http.StatusBadRequest, productentity.ErrorResponse{
-            Error: err.Error(),
-        })
+        c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
         return
     }
-
     mainProduct, err := p.product.CreateProduct(c.Request.Context(), &req)
     if err != nil {
-        c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{
-            Error: err.Error(),
-        })
+        c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
         return
     }
-
     c.JSON(http.StatusCreated, mainProduct)
 }
-
-
-
 // AddModel godoc
 // @Summary      Добавляет модель товара с фото
 // @Description  Принимает form-data: все поля AddModelReq + файл photo
@@ -79,21 +71,56 @@ func (p *ProductHandler) CreateProduct(c *gin.Context) {
 // @Router       /products/addmodel [post]
 func (p *ProductHandler) AddModel(c *gin.Context) {
     var req productentity.AddModelReq
-    if err := c.ShouldBind(&req); err != nil {
-        c.JSON(http.StatusBadRequest,productentity.ErrorResponse{Error: err.Error()})
-        return
+
+    // Строковые поля
+    req.MainProductId = c.PostForm("mainproductId")
+    req.Description   = c.PostForm("description")
+    req.Colour        = c.PostForm("colour")
+
+    // Размер (int32)
+    if sizeStr := c.PostForm("size"); sizeStr != "" {
+        size, err := strconv.Atoi(sizeStr)
+        if err != nil {
+            c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: "invalid size"})
+            return
+        }
+        req.Size = int32(size)
     }
+
+    // Цена (float32)
+    if priceStr := c.PostForm("price"); priceStr != "" {
+        price, err := strconv.ParseFloat(priceStr, 32)
+        if err != nil {
+            c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: "invalid price"})
+            return
+        }
+        req.Price = float32(price)
+    }
+
+    // Количество (int32)
+    if qtyStr := c.PostForm("quantity"); qtyStr != "" {
+        qty, err := strconv.Atoi(qtyStr)
+        if err != nil {
+            c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: "invalid quantity"})
+            return
+        }
+        req.Quantity = int32(qty)
+    }
+
+    // Файл фото
     fileHeader, err := c.FormFile("photo")
     if err != nil {
-        c.JSON(http.StatusBadRequest,productentity.ErrorResponse{Error: "photo is required"})
+        c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: "photo is required"})
         return
     }
     objectName, err := p.minioPhoto.AddPhoto(c.Request.Context(), fileHeader)
     if err != nil {
-        c.JSON(http.StatusInternalServerError,productentity.ErrorResponse{Error: err.Error()})
+        c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
         return
     }
     req.PhotoURL = objectName
+
+    // Сохранение модели
     product, err := p.product.AddModel(c.Request.Context(), &req)
     if err != nil {
         c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
@@ -103,111 +130,125 @@ func (p *ProductHandler) AddModel(c *gin.Context) {
 }
 
 
-
 // UpdateProductName godoc
 // @Summary      Update product name
 // @Description  Обновляет название продукта по ID
 // @Tags         products
 // @Accept       json
 // @Produce      json
-// @Param        payload  body      productentity.UpdateNameReq          true  "Payload для обновления названия продукта"
-// @Success      200      {object}  productentity.GeneralResponseProduct  "Успешный ответ с обновлённым продуктом"
-// @Failure      400      {object}  productentity.ErrorResponse          "Неверный запрос"
-// @Failure      500      {object}  productentity.ErrorResponse          "Внутренняя ошибка сервера"
+// @Param        payload  body      productentity.UpdateNameReq         true  "Update payload"
+// @Success      200      {object}  productentity.GeneralResponseProduct "Updated"
+// @Failure      400      {object}  productentity.ErrorResponse         "Bad Request"
+// @Failure      500      {object}  productentity.ErrorResponse         "Internal Server Error"
 // @Router       /products/name [put]
 func (p *ProductHandler) UpdateProductName(c *gin.Context) {
     var req productentity.UpdateNameReq
-
     if err := c.ShouldBindJSON(&req); err != nil {
         c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
         return
     }
-
     generalRes, err := p.product.UpdateName(c.Request.Context(), &req)
     if err != nil {
         c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
         return
     }
-
     c.JSON(http.StatusOK, generalRes)
 }
 
-
-func (p *ProductHandler)GetMainProduct(c *gin.Context) {
-    
+// GetMainProduct godoc
+// @Summary      Get list of main products
+// @Description  Получает список основных продуктов. Поддерживает фильтрацию и пагинацию.
+// @Tags         products
+// @Accept       json
+// @Produce      json
+// @Param        field  query     string  false  "Filter/sort field"  example(name)
+// @Param        value   query     string     false  "Page number"        example(1)
+// @Success      200    {array}   productentity.ProductMain
+// @Failure      500    {object}  productentity.ErrorResponse
+// @Router       /products/main [get]
+func (p *ProductHandler) GetMainProduct(c *gin.Context) {
     field := c.Query("field")
-    page := c.Query("page")
-
-   mainProducts,err :=  p.product.GetMainProduct(c.Request.Context(),field,page)
-   if err != nil {
-    c.JSON(http.StatusInternalServerError,productentity.ErrorResponse{Error: err.Error()})
-    return
-   }
-
-   c.JSON(http.StatusOK,mainProducts)
+    value := c.Query("value")
+    mainProducts, err := p.product.GetMainProduct(c.Request.Context(), field, value)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
+        return
+    }
+    c.JSON(http.StatusOK, mainProducts)
 }
-
-
-
-
 // GetAllProduct godoc
-// @Summary      List products
+// @Summary      Список продуктов
 // @Description  Получить список продуктов с фильтрацией и пагинацией
 // @Tags         products
 // @Accept       json
 // @Produce      json
-// @Param        field   query     string  false  "Поле для фильтрации (например, name, category)"
-// @Param        value   query     string  false  "Значение для фильтрации"
-// @Param        page    query     int     false  "Номер страницы"       default(1)
-// @Param        limit   query     int     false  "Размер страницы"      default(10)
-// @Success      200     {array}   productentity.GetProductsRes        "Успешный ответ — список продуктов"
-// @Failure      400     {object}  productentity.ErrorResponse "Ошибка в параметрах запроса"
-// @Failure      500     {object}  productentity.ErrorResponse "Внутренняя ошибка сервера"
+// @Param        field   query     string  false  "Поле для фильтра (name, category)"
+// @Param        value   query     string  false  "Значение для фильтра"
+// @Param        page    query     int     false  "Номер страницы"   default(1)
+// @Param        limit   query     int     false  "Размер страницы"  default(10)
+// @Success      200     {object}  productentity.GetProductsRes   "Список продуктов"
+// @Failure      400     {object}  productentity.ErrorResponse     "Неверный запрос"
+// @Failure      500     {object}  productentity.ErrorResponse     "Внутренняя ошибка сервера"
 // @Router       /products [get]
 func (p *ProductHandler) GetAllProduct(c *gin.Context) {
     var req productentity.GetProductsReq
-
     if err := c.ShouldBindQuery(&req); err != nil {
         c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
         return
     }
 
-    products, err := p.product.GetAllProduct(c.Request.Context(), &req)
+    // 1. Получаем продукты и общее количество
+    resp, err := p.product.GetAllProduct(c.Request.Context(), &req)
     if err != nil {
         c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
         return
     }
 
-    c.JSON(http.StatusOK, products)
+    // 2. Если нет продуктов — сразу возвращаем пустой список
+    if len(resp.Products) == 0 {
+        c.JSON(http.StatusOK, resp)
+        return
+    }
+
+    // 3. Для каждого продукта генерируем подписанный URL для фото
+    for i, prod := range resp.Products {
+        signedURL, err := p.minioPhoto.GetPhotoURL(c.Request.Context(), prod.PhotoURL)
+        if err != nil {
+            // Логируем ошибку, но не прерываем весь запрос
+            c.Error(err) // Gin автоматически залогирует ошибку
+            signedURL = ""
+        }
+        resp.Products[i].PhotoURL = signedURL
+    }
+
+    // 4. Возвращаем итоговый JSON
+    c.JSON(http.StatusOK, resp)
 }
 
 
 
 // UpdateProduct godoc
-// @Summary      Partially update an existing product
-// @Description  Обновляет продукт по данным из тела запроса (multipart/form-data). Фото обновляется только если предоставлено.
+// @Summary      Partially update product
+// @Description  Обновляет продукт (multipart/form-data). Фото обновляется, если есть.
 // @Tags         products
 // @Accept       multipart/form-data
 // @Produce      json
-// @Param        id           formData string  true  "Product ID"
-// @Param        name        formData string  false "Product name"
-// @Param        category    formData string  false "Category"
-// @Param        description formData string  false "Description"
-// @Param        photo       formData file    false "Photo file"
-// @Success      200         {object} productentity.Product           "Успешный ответ — обновлённый продукт"
-// @Failure      400         {object} productentity.ErrorResponse     "Ошибка в данных запроса"
-// @Failure      500         {object} productentity.ErrorResponse     "Внутренняя ошибка сервера"
+// @Param        id           formData string true  "Product ID"
+// @Param        name         formData string false "Name"
+// @Param        category     formData string false "Category"
+// @Param        description  formData string false "Description"
+// @Param        photo        formData file   false "Photo file"
+// @Success      200          {object} productentity.Product        "Updated"
+// @Failure      400          {object} productentity.ErrorResponse  "Bad Request"
+// @Failure      500          {object} productentity.ErrorResponse  "Internal Server Error"
 // @Router       /products [patch]
 func (p *ProductHandler) UpdateProduct(c *gin.Context) {
     var req productentity.UpdateProductReq
-
     if err := c.ShouldBind(&req); err != nil {
         c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
         return
     }
-
     fileHeader, err := c.FormFile("photo")
-
     if err == nil {
         objectName, err := p.minioPhoto.AddPhoto(c.Request.Context(), fileHeader)
         if err != nil {
@@ -215,53 +256,39 @@ func (p *ProductHandler) UpdateProduct(c *gin.Context) {
             return
         }
         req.PhotoURL = objectName
-    } else {
-        req.PhotoURL = ""
-        if err != http.ErrMissingFile {
-     
-            c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: "Error with photo upload"})
-            return
-        }
     }
-
     product, err := p.product.UpdateProduct(c.Request.Context(), &req)
     if err != nil {
         c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
         return
     }
-
     c.JSON(http.StatusOK, product)
 }
 
-
 // DeleteProduct godoc
 // @Summary      Delete an existing product
-// @Description  Удаляет продукт по переданному идентификатору.
+// @Description  Удаляет продукт по ID
 // @Tags         products
 // @Accept       json
 // @Produce      json
-// @Param        payload  body      productentity.DeleteProductReq      true  "Payload для удаления продукта"
-// @Success      200      {object}  productentity.GeneralResponseProduct  "Результат удаления"
-// @Failure      400      {object}  productentity.ErrorResponse          "Неверный запрос"
-// @Failure      500      {object}  productentity.ErrorResponse          "Внутренняя ошибка сервера"
+// @Param        payload  body      productentity.DeleteProductReq      true  "Delete payload"
+// @Success      200      {object}  productentity.GeneralResponseProduct "Deleted"
+// @Failure      400      {object}  productentity.ErrorResponse          "Bad Request"
+// @Failure      500      {object}  productentity.ErrorResponse          "Internal Server Error"
 // @Router       /products [delete]
 func (p *ProductHandler) DeleteProduct(c *gin.Context) {
     var req productentity.DeleteProductReq
-
     if err := c.ShouldBindJSON(&req); err != nil {
         c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
         return
     }
-
     res, err := p.product.DeleteProduct(c.Request.Context(), &req)
     if err != nil {
         c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
         return
     }
-
     c.JSON(http.StatusOK, res)
 }
-
 
 // CreateCategory godoc
 // @Summary      Create a new category
@@ -270,38 +297,33 @@ func (p *ProductHandler) DeleteProduct(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        payload  body      productentity.CreateCategoryReq   true  "Category payload"
-// @Success      200      {object}  productentity.GeneralResponseCategory
-// @Failure      400      {object}  productentity.ErrorResponse
-// @Failure      500      {object}  productentity.ErrorResponse
-// @Router       products/categories [post]
+// @Success      200      {object}  productentity.GeneralResponseProduct "Created"
+// @Failure      400      {object}  productentity.ErrorResponse          "Bad Request"
+// @Failure      500      {object}  productentity.ErrorResponse          "Internal Server Error"
+// @Router       /products/categories [post]
 func (p *ProductHandler) CreateCategory(c *gin.Context) {
     var req productentity.CreateCategoryReq
-
     if err := c.ShouldBindJSON(&req); err != nil {
         c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
         return
     }
-
     generalRes, err := p.product.CreateCategory(c.Request.Context(), &req)
     if err != nil {
         c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
         return
     }
-
     c.JSON(http.StatusOK, generalRes)
 }
 
-
-
 // GetAllCategory godoc
 // @Summary      Retrieve all categories
-// @Description  Возвращает список всех категорий продуктов
+// @Description  Возвращает список всех категорий
 // @Tags         categories
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  productentity.GetcategoriesRes
-// @Failure      500  {object}  productentity.ErrorResponse
-// @Router       products/categories [get]
+// @Success      200  {array}   productentity.GetcategoriesRes    "Categories list"
+// @Failure      500  {object}  productentity.ErrorResponse       "Internal Server Error"
+// @Router       /products/categories [get]
 func (p *ProductHandler) GetAllCategory(c *gin.Context) {
     categories, err := p.product.GetAllCategory(c.Request.Context())
     if err != nil {
@@ -311,62 +333,52 @@ func (p *ProductHandler) GetAllCategory(c *gin.Context) {
     c.JSON(http.StatusOK, categories)
 }
 
-
-
 // UpdateCategory godoc
 // @Summary      Update an existing category
-// @Description  Обновляет название или другие параметры категории
+// @Description  Обновляет категорию
 // @Tags         categories
 // @Accept       json
 // @Produce      json
-// @Param        payload  body      productentity.UpdateCategoryReq   true  "Category update payload"
-// @Success      200      {object}  productentity.GeneralResponseCategory
-// @Failure      400      {object}  productentity.ErrorResponse
-// @Failure      500      {object}  productentity.ErrorResponse
-// @Router       products/categories [put]
+// @Param        payload  body      productentity.UpdateCategoryReq   true  "Update payload"
+// @Success      200      {object}  productentity.GeneralResponseProduct "Updated"
+// @Failure      400      {object}  productentity.ErrorResponse          "Bad Request"
+// @Failure      500      {object}  productentity.ErrorResponse          "Internal Server Error"
+// @Router       /products/categories [put]
 func (p *ProductHandler) UpdateCategory(c *gin.Context) {
     var req productentity.UpdateCategoryReq
-
     if err := c.ShouldBindJSON(&req); err != nil {
         c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
         return
     }
-
-    generalResponse, err := p.product.UpdateCategory(c.Request.Context(), &req)
+    generalRes, err := p.product.UpdateCategory(c.Request.Context(), &req)
     if err != nil {
         c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
         return
     }
-
-    c.JSON(http.StatusOK, generalResponse)
+    c.JSON(http.StatusOK, generalRes)
 }
-
 
 // DeleteCategory godoc
 // @Summary      Delete a category
-// @Description  Удаляет категорию по переданному идентификатору
+// @Description  Удаляет категорию по ID
 // @Tags         categories
 // @Accept       json
 // @Produce      json
-// @Param        payload  body      productentity.DeleteCategoryReq   true  "Category deletion payload"
-// @Success      200      {object}  productentity.GeneralResponseCategory
-// @Failure      400      {object}  productentity.ErrorResponse
-// @Failure      500      {object}  productentity.ErrorResponse
-// @Router       products/categories [delete]
+// @Param        payload  body      productentity.DeleteCategoryReq   true  "Delete payload"
+// @Success      200      {object}  productentity.GeneralResponseProduct "Deleted"
+// @Failure      400      {object}  productentity.ErrorResponse          "Bad Request"
+// @Failure      500      {object}  productentity.ErrorResponse          "Internal Server Error"
+// @Router       /products/categories [delete]
 func (p *ProductHandler) DeleteCategory(c *gin.Context) {
     var req productentity.DeleteCategoryReq
-
     if err := c.ShouldBindJSON(&req); err != nil {
         c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
         return
     }
-
     generalRes, err := p.product.DeleteCategory(c.Request.Context(), &req)
     if err != nil {
         c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
         return
     }
-
     c.JSON(http.StatusOK, generalRes)
 }
-

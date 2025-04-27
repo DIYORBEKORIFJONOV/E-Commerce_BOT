@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/carts": {
             "get": {
-                "description": "GetCart retrieves the contents of a user's cart.",
+                "description": "Получает содержимое корзины",
                 "consumes": [
                     "application/json"
                 ],
@@ -39,27 +39,27 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Current cart contents",
+                        "description": "Contents",
                         "schema": {
-                            "$ref": "#/definitions/models.Cart"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Cart"
                         }
                     },
                     "400": {
-                        "description": "Invalid query parameters",
+                        "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal server error",
+                        "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse"
                         }
                     }
                 }
             },
             "put": {
-                "description": "UpdateCart modifies the quantities or items in a user's cart.",
+                "description": "Обновляет корзину",
                 "consumes": [
                     "application/json"
                 ],
@@ -72,32 +72,32 @@ const docTemplate = `{
                 "summary": "Update cart contents",
                 "parameters": [
                     {
-                        "description": "Cart update payload",
+                        "description": "Update payload",
                         "name": "update",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UpdateCartReq"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.UpdateCartReq"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Updated cart contents",
+                        "description": "Updated",
                         "schema": {
-                            "$ref": "#/definitions/models.Cart"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Cart"
                         }
                     },
                     "403": {
-                        "description": "Invalid request or update failed",
+                        "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse"
                         }
                     }
                 }
             },
             "delete": {
-                "description": "DeleteCart clears all items from a user's cart.",
+                "description": "Очищает корзину",
                 "consumes": [
                     "application/json"
                 ],
@@ -110,26 +110,26 @@ const docTemplate = `{
                 "summary": "Delete a user's cart",
                 "parameters": [
                     {
-                        "description": "User cart request",
+                        "description": "User payload",
                         "name": "user",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.GetCartReq"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GetCartReq"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Cart deleted successfully",
+                        "description": "Deleted",
                         "schema": {
-                            "$ref": "#/definitions/models.GeneralOrderResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GeneralOrderResponse"
                         }
                     },
                     "403": {
-                        "description": "Invalid request or deletion failed",
+                        "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse"
                         }
                     }
                 }
@@ -137,7 +137,7 @@ const docTemplate = `{
         },
         "/carts/add/product": {
             "post": {
-                "description": "AddProduct2Cart adds one or more products to a user's shopping cart.",
+                "description": "Добавляет товары в корзину",
                 "consumes": [
                     "application/json"
                 ],
@@ -150,26 +150,26 @@ const docTemplate = `{
                 "summary": "Add products to cart",
                 "parameters": [
                     {
-                        "description": "Products to add to cart",
+                        "description": "Items payload",
                         "name": "items",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.AddProducts2Cart"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.AddProducts2Cart"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Updated cart contents",
+                        "description": "Updated",
                         "schema": {
-                            "$ref": "#/definitions/models.GeneralOrderResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GeneralOrderResponse"
                         }
                     },
                     "403": {
-                        "description": "Invalid request or addition failed",
+                        "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse"
                         }
                     }
                 }
@@ -177,7 +177,7 @@ const docTemplate = `{
         },
         "/carts/product": {
             "delete": {
-                "description": "DeleteProductsFromCart removes specified products from a user's cart.",
+                "description": "Удаляет указанные товары из корзины",
                 "consumes": [
                     "application/json"
                 ],
@@ -190,26 +190,26 @@ const docTemplate = `{
                 "summary": "Remove specific products from cart",
                 "parameters": [
                     {
-                        "description": "Products to remove from cart",
+                        "description": "Items payload",
                         "name": "items",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.DeleteProductsfromCartReq"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.DeleteProductsfromCartReq"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Updated cart contents",
+                        "description": "Updated",
                         "schema": {
-                            "$ref": "#/definitions/models.Cart"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Cart"
                         }
                     },
                     "403": {
-                        "description": "Invalid request or deletion failed",
+                        "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse"
                         }
                     }
                 }
@@ -217,7 +217,7 @@ const docTemplate = `{
         },
         "/orders/completed": {
             "put": {
-                "description": "OrderCompleted updates the status of an order to completed.",
+                "description": "Помечает заказ как завершённый",
                 "consumes": [
                     "application/json"
                 ],
@@ -230,26 +230,26 @@ const docTemplate = `{
                 "summary": "Mark an order as completed",
                 "parameters": [
                     {
-                        "description": "Order completion payload",
+                        "description": "Update payload",
                         "name": "status",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.UpdateOrderReq"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.UpdateOrderReq"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Order marked completed",
+                        "description": "Updated",
                         "schema": {
-                            "$ref": "#/definitions/models.Order"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Order"
                         }
                     },
                     "403": {
-                        "description": "Invalid request or update failed",
+                        "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse"
                         }
                     }
                 }
@@ -257,7 +257,7 @@ const docTemplate = `{
         },
         "/orders/create": {
             "post": {
-                "description": "CreateOrder accepts order details and creates a new order in the system.",
+                "description": "Создаёт новый заказ",
                 "consumes": [
                     "application/json"
                 ],
@@ -270,26 +270,26 @@ const docTemplate = `{
                 "summary": "Create a new order",
                 "parameters": [
                     {
-                        "description": "Order request payload",
+                        "description": "Order payload",
                         "name": "order",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.CreateOrderReq"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.CreateOrderReq"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "Order created successfully",
+                        "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/models.Order"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Order"
                         }
                     },
                     "403": {
-                        "description": "Invalid request or creation failed",
+                        "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse"
                         }
                     }
                 }
@@ -297,7 +297,7 @@ const docTemplate = `{
         },
         "/orders/getall": {
             "get": {
-                "description": "GetOrders returns a list of orders based on the provided filters.",
+                "description": "Возвращает список заказов",
                 "consumes": [
                     "application/json"
                 ],
@@ -318,21 +318,21 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of orders",
+                        "description": "List",
                         "schema": {
-                            "$ref": "#/definitions/models.GetAllOrdersRes"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GetAllOrdersRes"
                         }
                     },
                     "400": {
-                        "description": "Invalid query parameters",
+                        "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse"
                         }
                     },
                     "500": {
-                        "description": "Internal server error",
+                        "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/models.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse"
                         }
                     }
                 }
@@ -350,17 +350,17 @@ const docTemplate = `{
                 "tags": [
                     "products"
                 ],
-                "summary": "List products",
+                "summary": "Список продуктов",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Поле для фильтрации (например, name, category)",
+                        "description": "Поле для фильтра (name, category)",
                         "name": "field",
                         "in": "query"
                     },
                     {
                         "type": "string",
-                        "description": "Значение для фильтрации",
+                        "description": "Значение для фильтра",
                         "name": "value",
                         "in": "query"
                     },
@@ -381,24 +381,21 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Успешный ответ — список продуктов",
+                        "description": "Список продуктов",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/productentity.GetProductsRes"
-                            }
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GetProductsRes"
                         }
                     },
                     "400": {
-                        "description": "Ошибка в параметрах запроса",
+                        "description": "Неверный запрос",
                         "schema": {
-                            "$ref": "#/definitions/productentity.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Внутренняя ошибка сервера",
                         "schema": {
-                            "$ref": "#/definitions/productentity.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
                         }
                     }
                 }
@@ -422,7 +419,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/productentity.CreateProductReq"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.CreateProductReq"
                         }
                     }
                 ],
@@ -430,25 +427,25 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/productentity.Product"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.Product"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/productentity.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/productentity.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
                         }
                     }
                 }
             },
             "delete": {
-                "description": "Удаляет продукт по переданному идентификатору.",
+                "description": "Удаляет продукт по ID",
                 "consumes": [
                     "application/json"
                 ],
@@ -461,38 +458,38 @@ const docTemplate = `{
                 "summary": "Delete an existing product",
                 "parameters": [
                     {
-                        "description": "Payload для удаления продукта",
+                        "description": "Delete payload",
                         "name": "payload",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/productentity.DeleteProductReq"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.DeleteProductReq"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Результат удаления",
+                        "description": "Deleted",
                         "schema": {
-                            "$ref": "#/definitions/productentity.GeneralResponseProduct"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct"
                         }
                     },
                     "400": {
-                        "description": "Неверный запрос",
+                        "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/productentity.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
                         }
                     },
                     "500": {
-                        "description": "Внутренняя ошибка сервера",
+                        "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/productentity.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
                         }
                     }
                 }
             },
             "patch": {
-                "description": "Обновляет продукт по данным из тела запроса (multipart/form-data). Фото обновляется только если предоставлено.",
+                "description": "Обновляет продукт (multipart/form-data). Фото обновляется, если есть.",
                 "consumes": [
                     "multipart/form-data"
                 ],
@@ -502,7 +499,7 @@ const docTemplate = `{
                 "tags": [
                     "products"
                 ],
-                "summary": "Partially update an existing product",
+                "summary": "Partially update product",
                 "parameters": [
                     {
                         "type": "string",
@@ -513,7 +510,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "Product name",
+                        "description": "Name",
                         "name": "name",
                         "in": "formData"
                     },
@@ -538,21 +535,21 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Успешный ответ — обновлённый продукт",
+                        "description": "Updated",
                         "schema": {
-                            "$ref": "#/definitions/productentity.Product"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.Product"
                         }
                     },
                     "400": {
-                        "description": "Ошибка в данных запроса",
+                        "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/productentity.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
                         }
                     },
                     "500": {
-                        "description": "Внутренняя ошибка сервера",
+                        "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/productentity.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
                         }
                     }
                 }
@@ -621,19 +618,277 @@ const docTemplate = `{
                     "201": {
                         "description": "Созданный товар",
                         "schema": {
-                            "$ref": "#/definitions/productentity.Product"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.Product"
                         }
                     },
                     "400": {
                         "description": "Некорректный запрос",
                         "schema": {
-                            "$ref": "#/definitions/productentity.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
                         }
                     },
                     "500": {
                         "description": "Ошибка сервера",
                         "schema": {
-                            "$ref": "#/definitions/productentity.ErrorResponse"
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/categories": {
+            "get": {
+                "description": "Возвращает список всех категорий",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "Retrieve all categories",
+                "responses": {
+                    "200": {
+                        "description": "Categories list",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GetcategoriesRes"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Обновляет категорию",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "Update an existing category",
+                "parameters": [
+                    {
+                        "description": "Update payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.UpdateCategoryReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Updated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Создаёт категорию",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "Create a new category",
+                "parameters": [
+                    {
+                        "description": "Category payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.CreateCategoryReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Удаляет категорию по ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "categories"
+                ],
+                "summary": "Delete a category",
+                "parameters": [
+                    {
+                        "description": "Delete payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.DeleteCategoryReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleted",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/main": {
+            "get": {
+                "description": "Получает список основных продуктов. Поддерживает фильтрацию и пагинацию.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Get list of main products",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "example": "name",
+                        "description": "Filter/sort field",
+                        "name": "field",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "example": "1",
+                        "description": "Page number",
+                        "name": "value",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ProductMain"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/products/name": {
+            "put": {
+                "description": "Обновляет название продукта по ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "products"
+                ],
+                "summary": "Update product name",
+                "parameters": [
+                    {
+                        "description": "Update payload",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.UpdateNameReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Updated",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse"
                         }
                     }
                 }
@@ -641,7 +896,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "models.AddProducts2Cart": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.AddProducts2Cart": {
             "type": "object",
             "properties": {
                 "productId": {
@@ -655,13 +910,13 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Cart": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Cart": {
             "type": "object",
             "properties": {
                 "products": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.ProductOrder"
+                        "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ProductOrder"
                     }
                 },
                 "totalPrice": {
@@ -672,7 +927,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.CreateOrderReq": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.CreateOrderReq": {
             "type": "object",
             "properties": {
                 "comment": {
@@ -682,14 +937,14 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "cordination": {
-                    "$ref": "#/definitions/models.Location"
+                    "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Location"
                 },
                 "userId": {
                     "type": "string"
                 }
             }
         },
-        "models.DeleteProductsfromCartReq": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.DeleteProductsfromCartReq": {
             "type": "object",
             "properties": {
                 "productId": {
@@ -700,7 +955,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.ErrorResponse": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse": {
             "type": "object",
             "properties": {
                 "error": {
@@ -709,7 +964,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.GeneralOrderResponse": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GeneralOrderResponse": {
             "type": "object",
             "properties": {
                 "message": {
@@ -720,18 +975,18 @@ const docTemplate = `{
                 }
             }
         },
-        "models.GetAllOrdersRes": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GetAllOrdersRes": {
             "type": "object",
             "properties": {
                 "orders": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/models.Order"
+                        "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Order"
                     }
                 }
             }
         },
-        "models.GetCartReq": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GetCartReq": {
             "type": "object",
             "properties": {
                 "userId": {
@@ -739,7 +994,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Location": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Location": {
             "type": "object",
             "properties": {
                 "latitude": {
@@ -750,11 +1005,11 @@ const docTemplate = `{
                 }
             }
         },
-        "models.Order": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Order": {
             "type": "object",
             "properties": {
                 "cartId": {
-                    "$ref": "#/definitions/models.Cart"
+                    "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Cart"
                 },
                 "comment": {
                     "type": "string"
@@ -763,7 +1018,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "cordination": {
-                    "$ref": "#/definitions/models.Location"
+                    "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Location"
                 },
                 "createdat": {
                     "type": "string"
@@ -782,7 +1037,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.ProductOrder": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ProductOrder": {
             "type": "object",
             "properties": {
                 "price": {
@@ -796,7 +1051,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.UpdateCartReq": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.UpdateCartReq": {
             "type": "object",
             "properties": {
                 "productId": {
@@ -810,7 +1065,7 @@ const docTemplate = `{
                 }
             }
         },
-        "models.UpdateOrderReq": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.UpdateOrderReq": {
             "type": "object",
             "properties": {
                 "orderId": {
@@ -818,7 +1073,15 @@ const docTemplate = `{
                 }
             }
         },
-        "productentity.CreateProductReq": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.CreateCategoryReq": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.CreateProductReq": {
             "type": "object",
             "properties": {
                 "category": {
@@ -829,7 +1092,15 @@ const docTemplate = `{
                 }
             }
         },
-        "productentity.DeleteProductReq": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.DeleteCategoryReq": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.DeleteProductReq": {
             "type": "object",
             "properties": {
                 "is_deleted": {
@@ -840,7 +1111,7 @@ const docTemplate = `{
                 }
             }
         },
-        "productentity.ErrorResponse": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse": {
             "type": "object",
             "properties": {
                 "error": {
@@ -849,7 +1120,7 @@ const docTemplate = `{
                 }
             }
         },
-        "productentity.GeneralResponseProduct": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct": {
             "type": "object",
             "properties": {
                 "message": {
@@ -860,7 +1131,7 @@ const docTemplate = `{
                 }
             }
         },
-        "productentity.GetProductsRes": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GetProductsRes": {
             "type": "object",
             "properties": {
                 "count": {
@@ -869,12 +1140,26 @@ const docTemplate = `{
                 "product": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/productentity.Product"
+                        "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.Product"
                     }
                 }
             }
         },
-        "productentity.Product": {
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GetcategoriesRes": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.CreateCategoryReq"
+                    }
+                },
+                "count": {
+                    "type": "integer"
+                }
+            }
+        },
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.Product": {
             "type": "object",
             "properties": {
                 "colour": {
@@ -905,6 +1190,42 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "updatedat": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ProductMain": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "mainproductId": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.UpdateCategoryReq": {
+            "type": "object",
+            "properties": {
+                "category": {
+                    "type": "string"
+                },
+                "newcategory": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.UpdateNameReq": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "newname": {
                     "type": "string"
                 }
             }

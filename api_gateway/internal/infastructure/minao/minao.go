@@ -1,11 +1,11 @@
-package minao
+package minao1
 
 import (
 	"context"
 	"fmt"
-	"io"
 	"log"
 	"mime/multipart"
+	"net/url"
 	"path/filepath"
 	"strings"
 	"time"
@@ -55,6 +55,7 @@ func (c *Client) AddPhoto(ctx context.Context, fileHeader *multipart.FileHeader)
 
     src, err := fileHeader.Open()
     if err != nil {
+        log.Fatal("2")
         return "", err
     }
     defer src.Close()
@@ -69,16 +70,21 @@ func (c *Client) AddPhoto(ctx context.Context, fileHeader *multipart.FileHeader)
         minio.PutObjectOptions{ContentType: fileHeader.Header.Get("Content-Type")},
     )
     if err != nil {
+        log.Fatal("3")
         return "", err
     }
 
     return objectName, nil
 }
 
-func (c *Client) GetPhoto(ctx context.Context, objectName string) (io.ReadCloser, error) {
-    obj, err := c.mc.GetObject(ctx, c.bucketName, objectName, minio.GetObjectOptions{})
+func (c *Client) GetPhotoURL(ctx context.Context, objectName string) (string, error) {
+
+    reqParams := make(url.Values)
+
+    // Сгенерировать URL с 24-часовым сроком действия
+    presignedURL, err := c.mc.PresignedGetObject(ctx, c.bucketName, objectName, 24*time.Hour, reqParams)
     if err != nil {
-        return nil, err
+        return "", err
     }
-    return obj, nil
+    return presignedURL.String(), nil
 }

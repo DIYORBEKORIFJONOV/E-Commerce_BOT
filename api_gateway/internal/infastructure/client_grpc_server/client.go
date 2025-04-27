@@ -1,12 +1,11 @@
 package clientgrpcserver
 
 import (
-	"api_gateway/internal/config"
-	orderproduct "api_gateway/pkg/protos/gen/order"
-	productpb "api_gateway/pkg/protos/gen/product"
-
 	"log"
 
+	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/config"
+	orderproduct "github.com/diyorbek/E-Commerce_BOT/api_gateway/pkg/protos/gen/order"
+	productpb "github.com/diyorbek/E-Commerce_BOT/api_gateway/pkg/protos/gen/product"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )

@@ -1,5 +1,8 @@
 package productentity
 
+
+
+
 type (
 	UpdateNameReq struct {
 		Name    string `json:"name"`
@@ -37,7 +40,7 @@ type (
 		Size        int32   `json:"size"`
 		Price       float32 `json:"price"`
 		Quantity    int32   `json:"quantity"`
-		PhotoURL    string  `json:"photourl"`
+		PhotoURL    string  `json:"-"`
 	}
 
 	 GetProductsReq struct {
@@ -71,6 +74,7 @@ type (
 		Status  bool   `json:"status"`
 		Message string `json:"message"`
 	}
+	
 
 	CreateCategoryReq struct {
 		Category string `json:"category"`

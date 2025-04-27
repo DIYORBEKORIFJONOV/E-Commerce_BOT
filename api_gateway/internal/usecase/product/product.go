@@ -1,8 +1,9 @@
 package productusecase
 
 import (
-	productentity "api_gateway/internal/entity/product"
 	"context"
+
+	productentity "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/entity/product"
 )
 
 type productUseCase interface {

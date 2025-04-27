@@ -1,4 +1,5 @@
-module api_gateway
+module github.com/diyorbek/E-Commerce_BOT/api_gateway
+
 
 go 1.23.1
 

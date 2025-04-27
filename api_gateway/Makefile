@@ -24,8 +24,14 @@ gen-order:
 		--go-grpc_opt=paths=source_relative
 
 # Initialize Swagger docs from your Swaggo comments
+# Initialize Swagger docs from your Swaggo comments
 swagger-init:
-	@$(SWAGGER_CMD) init -g internal/http/handler/order.go -o internal/app/docs
+	@$(SWAGGER_CMD) init \
+		--generalInfo cmd/main.go \
+		--parseInternal \
+		--parseDependency \
+		-o internal/app/docs
+
 
 # Run the application (adjust as needed to point at your main package)
 run:

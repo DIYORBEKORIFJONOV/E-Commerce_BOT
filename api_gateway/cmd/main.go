@@ -1,13 +1,13 @@
 package main
 
 import (
-	"api_gateway/internal/app"
-	"api_gateway/internal/config"
-	"api_gateway/logger"
 	"log"
 	"os"
 	"path/filepath"
 
+	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/app"
+	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/config"
+	"github.com/diyorbek/E-Commerce_BOT/api_gateway/logger"
 	"github.com/joho/godotenv"
 )
 

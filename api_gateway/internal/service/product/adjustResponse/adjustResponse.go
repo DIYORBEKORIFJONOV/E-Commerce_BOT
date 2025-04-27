@@ -1,12 +1,15 @@
 package adjustresponseproduct
 
 import (
-	productentity "api_gateway/internal/entity/product"
-	productpb "api_gateway/pkg/protos/gen/product"
+	productentity "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/entity/product"
+	productpb "github.com/diyorbek/E-Commerce_BOT/api_gateway/pkg/protos/gen/product"
 )
 
 type AdjustResponse struct{}
 
+func NewAddJsutResponse()*AdjustResponse {
+	return &AdjustResponse{}
+}
 func (p *AdjustResponse) Product(pb *productpb.Product) *productentity.Product {
 	if pb == nil {
 		return nil
@@ -73,15 +76,22 @@ func (p *AdjustResponse) Products(pbProducts *productpb.GetProductsRes, count in
 	}
 }
 
-func (p *AdjustResponse) MainProducts(pbProducts []*productpb.MainProduct, count int64) []productentity.ProductMain {
-	products := make([]productentity.ProductMain, 0, len(pbProducts))
-	for _, pb := range pbProducts {
-		if pb != nil {
-			products = append(products, *p.MainProduct(pb))
-		}
+func (p *AdjustResponse) MainProducts(pbProducts *productpb.GetMainProductRes, count int64) []*productentity.ProductMain {
+	products := make([]*productentity.ProductMain, 0, len(pbProducts.Products)) 
+  
+	for _, pb := range pbProducts.Products {
+	  if pb != nil {
+		products = append(products, &productentity.ProductMain{
+		  Category:      pb.Category,
+		  Name:          pb.Name,
+		  MainProductId: pb.MainProductId,
+		})
+	  }
 	}
+  
 	return products
-}
+  }
+  
 
 func (p *AdjustResponse) Categories(pbCategories []*productpb.CreateCategoryReq, count int64) *productentity.GetcategoriesRes {
 	categories := make([]*productentity.CreateCategoryReq, 0, len(pbCategories))

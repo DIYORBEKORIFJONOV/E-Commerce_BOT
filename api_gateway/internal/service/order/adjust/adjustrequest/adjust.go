@@ -1,13 +1,14 @@
 package adjustrequest
 
 import (
-	models "api_gateway/internal/entity/order"
-	clientgrpcserver "api_gateway/internal/infastructure/client_grpc_server"
-	"api_gateway/internal/service/order/adjust/adjustresponse"
-	orderproduct "api_gateway/pkg/protos/gen/order"
-	productpb "api_gateway/pkg/protos/gen/product"
 	"context"
 	"fmt"
+
+	models "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/entity/order"
+	clientgrpcserver "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/infastructure/client_grpc_server"
+	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/service/order/adjust/adjustresponse"
+	orderproduct "github.com/diyorbek/E-Commerce_BOT/api_gateway/pkg/protos/gen/order"
+	productpb "github.com/diyorbek/E-Commerce_BOT/api_gateway/pkg/protos/gen/product"
 )
 
 type AdjustRequest struct {

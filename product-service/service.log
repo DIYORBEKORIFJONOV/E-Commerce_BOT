@@ -383,3 +383,27 @@
 {"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T23:12:21+05:00","message":"getting successfuly"}
 {"level":"info","service":"payment-service","operation":"product-service","time":"2025-04-27T14:10:50+05:00","message":"Product server started"}
 {"level":"info","service":"payment-service","HOST":"localhost:9000","time":"2025-04-27T14:10:50+05:00","message":"Starting gRpc Server"}
+{"level":"info","service":"payment-service","operation":"product-service","time":"2025-04-27T21:41:01+05:00","message":"Product server started"}
+{"level":"info","service":"payment-service","HOST":"localhost:9000","time":"2025-04-27T21:41:01+05:00","message":"Starting gRpc Server"}
+{"level":"info","service":"payment-service","operation":"CreateCategory","time":"2025-04-27T21:45:13+05:00","message":"category successfuly created"}
+{"level":"info","service":"payment-service","operation":"GetAllCategory","time":"2025-04-27T21:45:23+05:00","message":"successfuly getting"}
+{"level":"info","service":"payment-service","categtory":"books","operation":"CreateProduct","product":"adventure","time":"2025-04-27T21:46:20+05:00","message":"Product succsessfuly created"}
+{"level":"error","service":"payment-service","operation":"AddModel","productId":"","error":"products not found","time":"2025-04-27T21:47:07+05:00","message":"products not found"}
+{"level":"error","service":"payment-service","operation":"GetMainProduct","error":"products not found","time":"2025-04-27T21:47:54+05:00","message":"products not found"}
+{"level":"error","service":"payment-service","productId":"","operation":"AddModel","error":"products not found","time":"2025-04-27T21:48:25+05:00","message":"products not found"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-27T21:48:51+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"CreateCategory","time":"2025-04-27T21:52:13+05:00","message":"category successfuly created"}
+{"level":"error","service":"payment-service","operation":"CreateCategory","error":"category already exists","time":"2025-04-27T21:52:14+05:00","message":"category already exists"}
+{"level":"error","service":"payment-service","operation":"CreateCategory","error":"category already exists","time":"2025-04-27T21:52:17+05:00","message":"category already exists"}
+{"level":"info","service":"payment-service","operation":"CreateProduct","product":"adventure","categtory":"books","time":"2025-04-27T21:52:33+05:00","message":"Product succsessfuly created"}
+{"level":"error","service":"payment-service","operation":"AddModel","productId":"","error":"products not found","time":"2025-04-27T21:53:13+05:00","message":"products not found"}
+{"level":"error","service":"payment-service","operation":"AddModel","productId":"","error":"products not found","time":"2025-04-27T21:55:27+05:00","message":"products not found"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-27T21:58:06+05:00","message":"getting successfuly"}
+{"level":"error","service":"payment-service","operation":"AddModel","productId":"","error":"products not found","time":"2025-04-27T22:10:24+05:00","message":"products not found"}
+{"level":"error","service":"payment-service","operation":"AddModel","productId":"","error":"products not found","time":"2025-04-27T22:10:46+05:00","message":"products not found"}
+{"level":"error","service":"payment-service","operation":"AddModel","productId":"","error":"products not found","time":"2025-04-27T22:20:16+05:00","message":"products not found"}
+{"level":"error","service":"payment-service","operation":"AddModel","productId":"","error":"products not found","time":"2025-04-27T22:23:44+05:00","message":"products not found"}
+{"level":"info","service":"payment-service","operation":"AddModel","productId":"ef9473b5-da2a-4e0b-b828-cdef8e1a6c06","time":"2025-04-27T22:31:08+05:00","message":"model successfulty added"}
+{"level":"info","service":"payment-service","operation":"AddModel","productId":"ef9473b5-da2a-4e0b-b828-cdef8e1a6c06","time":"2025-04-27T22:32:43+05:00","message":"model successfulty added"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-27T22:33:03+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-27T22:48:41+05:00","message":"getting successfuly"}

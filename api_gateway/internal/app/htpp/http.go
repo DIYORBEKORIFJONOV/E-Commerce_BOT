@@ -1,10 +1,12 @@
 package htppapp
 
 import (
-	"api_gateway/internal/http/router"
-	usecaseorder "api_gateway/internal/usecase/order"
 	"log/slog"
 
+	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/http/router"
+	minao1 "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/infastructure/minao"
+	usecaseorder "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/usecase/order"
+	productusecase "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/usecase/product"
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,8 +16,8 @@ type App struct {
 	Server *gin.Engine
 }
 
-func NewApp(logger *slog.Logger, port string, botIml *usecaseorder.OrderUseCaseIml) *App {
-	sever := router.RegisterRouter(botIml)
+func NewApp(logger *slog.Logger, port string, botIml *usecaseorder.OrderUseCaseIml,minioPhoto *minao1.Client,productUsceIml *productusecase.ProductUseCaseIml) *App {
+	sever := router.RegisterRouter(botIml,productUsceIml,minioPhoto)
 	return &App{
 		Port:   port,
 		Server: sever,

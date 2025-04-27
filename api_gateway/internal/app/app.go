@@ -1,15 +1,19 @@
 package app
 
 import (
-	htppapp "api_gateway/internal/app/htpp"
-	"api_gateway/internal/config"
-	clientgrpcserver "api_gateway/internal/infastructure/client_grpc_server"
-	orderservice "api_gateway/internal/service/order"
-	"api_gateway/internal/service/order/adjust/adjustrequest"
-	"api_gateway/internal/service/order/adjust/adjustresponse"
-	usecaseorder "api_gateway/internal/usecase/order"
 	"log"
 	"log/slog"
+
+	htppapp "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/app/htpp"
+	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/config"
+	clientgrpcserver "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/infastructure/client_grpc_server"
+	minao1 "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/infastructure/minao"
+	orderservice "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/service/order"
+	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/service/order/adjust/adjustrequest"
+	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/service/order/adjust/adjustresponse"
+	product_service "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/service/product"
+	usecaseorder "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/usecase/order"
+	productusecase "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/usecase/product"
 )
 
 type App struct {
@@ -29,7 +33,17 @@ func NewApp(logger *slog.Logger, cfg *config.Config) *App {
 
 	orderServiceIml := usecaseorder.NewOrderService(serviceOrder)
 
-	server := htppapp.NewApp(logger,cfg.AppPort,orderServiceIml)
+
+	minClien,err := minao1.NewClient("localhost:9005", "minioadmin", "minioadmin", "products",false)
+	if err != nil {
+		log.Fatal(err)
+	}
+	
+
+	serviceProduct:= product_service.NewProductReqService(&cleintGrpc)
+	serviceProductIml :=productusecase.NewProductUsage(serviceProduct)
+
+	server := htppapp.NewApp(logger,cfg.AppPort,orderServiceIml,minClien,serviceProductIml)
 	return &App{
 		HTTPApp: server,
 	}

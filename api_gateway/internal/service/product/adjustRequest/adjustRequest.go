@@ -1,24 +1,16 @@
 package adjustrequestproduct
 
 import (
-	productentity "api_gateway/internal/entity/product"
-	productpb "api_gateway/pkg/protos/gen/product"
+	productentity "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/entity/product"
+	productpb "github.com/diyorbek/E-Commerce_BOT/api_gateway/pkg/protos/gen/product"
 )
 
 type AdjustRequest struct {
 }
 
-// CreateProduct(ctx context.Context, req *productentity.CreateProductReq) (res *productentity.ProductMain, err error)
-// AddModel(ctx context.Context, req *productentity.AddModelReq) (product *productentity.Product, err error)
-// GetAllProduct(ctx context.Context, req *productentity.GetProductsReq) (products *productentity.GetProductsRes, err error)
-// UpdateProduct(ctx context.Context, req *productentity.UpdateProductReq) (product *productentity.Product, err error)
-// DeleteProduct(ctx context.Context, req *productentity.DeleteProductReq) (res *productentity.GeneralResponseProduct, err error)
-// CreateCategory(ctx context.Context, req *productentity.CreateCategoryReq) (res *productentity.GeneralResponseProduct, err error)
-// GetAllCategory(ctx context.Context) (categories *productentity.GetcategoriesRes, err error)
-// UpdateCategory(ctx context.Context, req *productentity.UpdateCategoryReq) (res *productentity.GeneralResponseProduct, err error)
-// DeleteCategory(ctx context.Context, req *productentity.DeleteCategoryReq) (res *productentity.GeneralResponseProduct, err error)
-// UpdateName(ctx context.Context, req *productentity.UpdateNameReq) (res *productentity.GeneralResponseProduct, err error)
-// GetMainProduct(ctx context.Context,field,value string)(products []*productentity.ProductMain, err error)
+func NewProductReq() *AdjustRequest {
+	return &AdjustRequest{}
+}
 
 func (p *AdjustRequest)CreateProductReq(req *productentity.CreateProductReq) *productpb.CreateProductReq {
 	return &productpb.CreateProductReq{

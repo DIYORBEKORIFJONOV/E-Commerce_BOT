@@ -1,9 +1,10 @@
 package adjustresponse
 
 import (
-	models "api_gateway/internal/entity/order"
-	orderproduct "api_gateway/pkg/protos/gen/order"
 	"context"
+
+	models "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/entity/order"
+	orderproduct "github.com/diyorbek/E-Commerce_BOT/api_gateway/pkg/protos/gen/order"
 )
 
 type AdjustResponse struct {

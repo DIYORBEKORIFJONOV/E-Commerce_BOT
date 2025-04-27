@@ -1,5 +1,5 @@
 definitions:
-  models.AddProducts2Cart:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.AddProducts2Cart:
     properties:
       productId:
         type: string
@@ -8,77 +8,77 @@ definitions:
       userId:
         type: string
     type: object
-  models.Cart:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Cart:
     properties:
       products:
         items:
-          $ref: '#/definitions/models.ProductOrder'
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ProductOrder'
         type: array
       totalPrice:
         type: number
       userId:
         type: string
     type: object
-  models.CreateOrderReq:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.CreateOrderReq:
     properties:
       comment:
         type: string
       contactNumber:
         type: string
       cordination:
-        $ref: '#/definitions/models.Location'
+        $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Location'
       userId:
         type: string
     type: object
-  models.DeleteProductsfromCartReq:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.DeleteProductsfromCartReq:
     properties:
       productId:
         type: string
       userId:
         type: string
     type: object
-  models.ErrorResponse:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse:
     properties:
       error:
         example: invalid request
         type: string
     type: object
-  models.GeneralOrderResponse:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GeneralOrderResponse:
     properties:
       message:
         type: string
       status:
         type: boolean
     type: object
-  models.GetAllOrdersRes:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GetAllOrdersRes:
     properties:
       orders:
         items:
-          $ref: '#/definitions/models.Order'
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Order'
         type: array
     type: object
-  models.GetCartReq:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GetCartReq:
     properties:
       userId:
         type: string
     type: object
-  models.Location:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Location:
     properties:
       latitude:
         type: string
       longtitude:
         type: string
     type: object
-  models.Order:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Order:
     properties:
       cartId:
-        $ref: '#/definitions/models.Cart'
+        $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Cart'
       comment:
         type: string
       contactNumber:
         type: string
       cordination:
-        $ref: '#/definitions/models.Location'
+        $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Location'
       createdat:
         type: string
       orderId:
@@ -90,7 +90,7 @@ definitions:
       userId:
         type: string
     type: object
-  models.ProductOrder:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ProductOrder:
     properties:
       price:
         type: number
@@ -99,7 +99,7 @@ definitions:
       quantity:
         type: integer
     type: object
-  models.UpdateCartReq:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.UpdateCartReq:
     properties:
       productId:
         type: string
@@ -108,48 +108,67 @@ definitions:
       userId:
         type: string
     type: object
-  models.UpdateOrderReq:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.UpdateOrderReq:
     properties:
       orderId:
         type: string
     type: object
-  productentity.CreateProductReq:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.CreateCategoryReq:
+    properties:
+      category:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.CreateProductReq:
     properties:
       category:
         type: string
       name:
         type: string
     type: object
-  productentity.DeleteProductReq:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.DeleteCategoryReq:
+    properties:
+      category:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.DeleteProductReq:
     properties:
       is_deleted:
         type: boolean
       productId:
         type: string
     type: object
-  productentity.ErrorResponse:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse:
     properties:
       error:
         example: invalid request
         type: string
     type: object
-  productentity.GeneralResponseProduct:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct:
     properties:
       message:
         type: string
       status:
         type: boolean
     type: object
-  productentity.GetProductsRes:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GetProductsRes:
     properties:
       count:
         type: integer
       product:
         items:
-          $ref: '#/definitions/productentity.Product'
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.Product'
         type: array
     type: object
-  productentity.Product:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GetcategoriesRes:
+    properties:
+      category:
+        items:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.CreateCategoryReq'
+        type: array
+      count:
+        type: integer
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.Product:
     properties:
       colour:
         type: string
@@ -172,6 +191,29 @@ definitions:
       updatedat:
         type: string
     type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ProductMain:
+    properties:
+      category:
+        type: string
+      mainproductId:
+        type: string
+      name:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.UpdateCategoryReq:
+    properties:
+      category:
+        type: string
+      newcategory:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.UpdateNameReq:
+    properties:
+      name:
+        type: string
+      newname:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -179,32 +221,32 @@ paths:
     delete:
       consumes:
       - application/json
-      description: DeleteCart clears all items from a user's cart.
+      description: Очищает корзину
       parameters:
-      - description: User cart request
+      - description: User payload
         in: body
         name: user
         required: true
         schema:
-          $ref: '#/definitions/models.GetCartReq'
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GetCartReq'
       produces:
       - application/json
       responses:
         "200":
-          description: Cart deleted successfully
+          description: Deleted
           schema:
-            $ref: '#/definitions/models.GeneralOrderResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GeneralOrderResponse'
         "403":
-          description: Invalid request or deletion failed
+          description: Bad Request
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
       summary: Delete a user's cart
       tags:
       - Cart
     get:
       consumes:
       - application/json
-      description: GetCart retrieves the contents of a user's cart.
+      description: Получает содержимое корзины
       parameters:
       - description: User ID
         in: query
@@ -215,42 +257,42 @@ paths:
       - application/json
       responses:
         "200":
-          description: Current cart contents
+          description: Contents
           schema:
-            $ref: '#/definitions/models.Cart'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Cart'
         "400":
-          description: Invalid query parameters
+          description: Bad Request
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
         "500":
-          description: Internal server error
+          description: Internal Server Error
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
       summary: Get cart details
       tags:
       - Cart
     put:
       consumes:
       - application/json
-      description: UpdateCart modifies the quantities or items in a user's cart.
+      description: Обновляет корзину
       parameters:
-      - description: Cart update payload
+      - description: Update payload
         in: body
         name: update
         required: true
         schema:
-          $ref: '#/definitions/models.UpdateCartReq'
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.UpdateCartReq'
       produces:
       - application/json
       responses:
         "200":
-          description: Updated cart contents
+          description: Updated
           schema:
-            $ref: '#/definitions/models.Cart'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Cart'
         "403":
-          description: Invalid request or update failed
+          description: Bad Request
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
       summary: Update cart contents
       tags:
       - Cart
@@ -258,26 +300,25 @@ paths:
     post:
       consumes:
       - application/json
-      description: AddProduct2Cart adds one or more products to a user's shopping
-        cart.
+      description: Добавляет товары в корзину
       parameters:
-      - description: Products to add to cart
+      - description: Items payload
         in: body
         name: items
         required: true
         schema:
-          $ref: '#/definitions/models.AddProducts2Cart'
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.AddProducts2Cart'
       produces:
       - application/json
       responses:
         "200":
-          description: Updated cart contents
+          description: Updated
           schema:
-            $ref: '#/definitions/models.GeneralOrderResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GeneralOrderResponse'
         "403":
-          description: Invalid request or addition failed
+          description: Bad Request
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
       summary: Add products to cart
       tags:
       - Cart
@@ -285,26 +326,25 @@ paths:
     delete:
       consumes:
       - application/json
-      description: DeleteProductsFromCart removes specified products from a user's
-        cart.
+      description: Удаляет указанные товары из корзины
       parameters:
-      - description: Products to remove from cart
+      - description: Items payload
         in: body
         name: items
         required: true
         schema:
-          $ref: '#/definitions/models.DeleteProductsfromCartReq'
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.DeleteProductsfromCartReq'
       produces:
       - application/json
       responses:
         "200":
-          description: Updated cart contents
+          description: Updated
           schema:
-            $ref: '#/definitions/models.Cart'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Cart'
         "403":
-          description: Invalid request or deletion failed
+          description: Bad Request
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
       summary: Remove specific products from cart
       tags:
       - Cart
@@ -312,25 +352,25 @@ paths:
     put:
       consumes:
       - application/json
-      description: OrderCompleted updates the status of an order to completed.
+      description: Помечает заказ как завершённый
       parameters:
-      - description: Order completion payload
+      - description: Update payload
         in: body
         name: status
         required: true
         schema:
-          $ref: '#/definitions/models.UpdateOrderReq'
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.UpdateOrderReq'
       produces:
       - application/json
       responses:
         "200":
-          description: Order marked completed
+          description: Updated
           schema:
-            $ref: '#/definitions/models.Order'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Order'
         "403":
-          description: Invalid request or update failed
+          description: Bad Request
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
       summary: Mark an order as completed
       tags:
       - Orders
@@ -338,26 +378,25 @@ paths:
     post:
       consumes:
       - application/json
-      description: CreateOrder accepts order details and creates a new order in the
-        system.
+      description: Создаёт новый заказ
       parameters:
-      - description: Order request payload
+      - description: Order payload
         in: body
         name: order
         required: true
         schema:
-          $ref: '#/definitions/models.CreateOrderReq'
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.CreateOrderReq'
       produces:
       - application/json
       responses:
         "201":
-          description: Order created successfully
+          description: Created
           schema:
-            $ref: '#/definitions/models.Order'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Order'
         "403":
-          description: Invalid request or creation failed
+          description: Bad Request
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
       summary: Create a new order
       tags:
       - Orders
@@ -365,7 +404,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: GetOrders returns a list of orders based on the provided filters.
+      description: Возвращает список заказов
       parameters:
       - description: Filter by customer ID
         in: query
@@ -375,17 +414,17 @@ paths:
       - application/json
       responses:
         "200":
-          description: List of orders
+          description: List
           schema:
-            $ref: '#/definitions/models.GetAllOrdersRes'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GetAllOrdersRes'
         "400":
-          description: Invalid query parameters
+          description: Bad Request
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
         "500":
-          description: Internal server error
+          description: Internal Server Error
           schema:
-            $ref: '#/definitions/models.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
       summary: Retrieve all orders
       tags:
       - Orders
@@ -393,29 +432,29 @@ paths:
     delete:
       consumes:
       - application/json
-      description: Удаляет продукт по переданному идентификатору.
+      description: Удаляет продукт по ID
       parameters:
-      - description: Payload для удаления продукта
+      - description: Delete payload
         in: body
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/productentity.DeleteProductReq'
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.DeleteProductReq'
       produces:
       - application/json
       responses:
         "200":
-          description: Результат удаления
+          description: Deleted
           schema:
-            $ref: '#/definitions/productentity.GeneralResponseProduct'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct'
         "400":
-          description: Неверный запрос
+          description: Bad Request
           schema:
-            $ref: '#/definitions/productentity.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
         "500":
-          description: Внутренняя ошибка сервера
+          description: Internal Server Error
           schema:
-            $ref: '#/definitions/productentity.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
       summary: Delete an existing product
       tags:
       - products
@@ -424,11 +463,11 @@ paths:
       - application/json
       description: Получить список продуктов с фильтрацией и пагинацией
       parameters:
-      - description: Поле для фильтрации (например, name, category)
+      - description: Поле для фильтра (name, category)
         in: query
         name: field
         type: string
-      - description: Значение для фильтрации
+      - description: Значение для фильтра
         in: query
         name: value
         type: string
@@ -446,34 +485,32 @@ paths:
       - application/json
       responses:
         "200":
-          description: Успешный ответ — список продуктов
+          description: Список продуктов
           schema:
-            items:
-              $ref: '#/definitions/productentity.GetProductsRes'
-            type: array
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GetProductsRes'
         "400":
-          description: Ошибка в параметрах запроса
+          description: Неверный запрос
           schema:
-            $ref: '#/definitions/productentity.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
         "500":
           description: Внутренняя ошибка сервера
           schema:
-            $ref: '#/definitions/productentity.ErrorResponse'
-      summary: List products
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      summary: Список продуктов
       tags:
       - products
     patch:
       consumes:
       - multipart/form-data
-      description: Обновляет продукт по данным из тела запроса (multipart/form-data).
-        Фото обновляется только если предоставлено.
+      description: Обновляет продукт (multipart/form-data). Фото обновляется, если
+        есть.
       parameters:
       - description: Product ID
         in: formData
         name: id
         required: true
         type: string
-      - description: Product name
+      - description: Name
         in: formData
         name: name
         type: string
@@ -493,18 +530,18 @@ paths:
       - application/json
       responses:
         "200":
-          description: Успешный ответ — обновлённый продукт
+          description: Updated
           schema:
-            $ref: '#/definitions/productentity.Product'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.Product'
         "400":
-          description: Ошибка в данных запроса
+          description: Bad Request
           schema:
-            $ref: '#/definitions/productentity.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
         "500":
-          description: Внутренняя ошибка сервера
+          description: Internal Server Error
           schema:
-            $ref: '#/definitions/productentity.ErrorResponse'
-      summary: Partially update an existing product
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      summary: Partially update product
       tags:
       - products
     post:
@@ -517,22 +554,22 @@ paths:
         name: product
         required: true
         schema:
-          $ref: '#/definitions/productentity.CreateProductReq'
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.CreateProductReq'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/productentity.Product'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.Product'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/productentity.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/productentity.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
       summary: Create a new product
       tags:
       - products
@@ -578,16 +615,186 @@ paths:
         "201":
           description: Созданный товар
           schema:
-            $ref: '#/definitions/productentity.Product'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.Product'
         "400":
           description: Некорректный запрос
           schema:
-            $ref: '#/definitions/productentity.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
         "500":
           description: Ошибка сервера
           schema:
-            $ref: '#/definitions/productentity.ErrorResponse'
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
       summary: Добавляет модель товара с фото
+      tags:
+      - products
+  /products/categories:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет категорию по ID
+      parameters:
+      - description: Delete payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.DeleteCategoryReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Deleted
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      summary: Delete a category
+      tags:
+      - categories
+    get:
+      consumes:
+      - application/json
+      description: Возвращает список всех категорий
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Categories list
+          schema:
+            items:
+              $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GetcategoriesRes'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      summary: Retrieve all categories
+      tags:
+      - categories
+    post:
+      consumes:
+      - application/json
+      description: Создаёт категорию
+      parameters:
+      - description: Category payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.CreateCategoryReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      summary: Create a new category
+      tags:
+      - categories
+    put:
+      consumes:
+      - application/json
+      description: Обновляет категорию
+      parameters:
+      - description: Update payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.UpdateCategoryReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      summary: Update an existing category
+      tags:
+      - categories
+  /products/main:
+    get:
+      consumes:
+      - application/json
+      description: Получает список основных продуктов. Поддерживает фильтрацию и пагинацию.
+      parameters:
+      - description: Filter/sort field
+        example: name
+        in: query
+        name: field
+        type: string
+      - description: Page number
+        example: "1"
+        in: query
+        name: value
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ProductMain'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      summary: Get list of main products
+      tags:
+      - products
+  /products/name:
+    put:
+      consumes:
+      - application/json
+      description: Обновляет название продукта по ID
+      parameters:
+      - description: Update payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.UpdateNameReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      summary: Update product name
       tags:
       - products
 swagger: "2.0"
