@@ -75,7 +75,7 @@ func (u *Mongo) UpdateCart(ctx context.Context, req *models.UpdateCartReq) error
 }
 
 func (u *Mongo) DeleteCart(ctx context.Context, order *models.GetCartReq) error {
-	_, err := u.B.DeleteOne(ctx, bson.M{"userId": order.UserID})
+	_, err := u.B.DeleteMany(ctx, bson.M{"userId": order.UserID})
 	if err != nil {
 		return fmt.Errorf("error deleting cart: %v", err)
 	}

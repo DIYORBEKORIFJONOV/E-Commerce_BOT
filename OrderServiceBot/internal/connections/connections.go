@@ -15,7 +15,7 @@ import (
 
 func Mongo() *mongodb.Mongo {
 	cfg := config.Configuration()
-	opt, err := mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://localhost:27017"))
+	opt, err := mongo.Connect(context.TODO(), options.Client().ApplyURI("mongodb://localhost:27018"))
 	if err != nil {
 		log.Fatal(err)
 	}
