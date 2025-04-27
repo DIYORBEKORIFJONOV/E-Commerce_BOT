@@ -5,18 +5,23 @@ import (
 	clientgrpcserver "api_gateway/internal/infastructure/client_grpc_server"
 	adjustrequestproduct "api_gateway/internal/service/product/adjustRequest"
 	adjustresponseproduct "api_gateway/internal/service/product/adjustResponse"
+<<<<<<< HEAD
 	productpb "api_gateway/pkg/protos/gen/product"
 	"context"
 
 )
 
 
+=======
+	"context"
+)
+
+>>>>>>> f5291bbd6c0dc3237d7e359bb80a6320cf5aae5b
 type ProductService struct {
 	O   clientgrpcserver.ServiceClient
 	Req *adjustrequestproduct.AdjustRequest
 	Res *adjustresponseproduct.AdjustResponse
 }
-
 
 // type productUseCase interface {
 // 	DeleteCategory(ctx context.Context, req *productentity.DeleteCategoryReq) (res *productentity.GeneralResponseProduct, err error)
@@ -24,6 +29,7 @@ type ProductService struct {
 // 	GetMainProduct(ctx context.Context,field,value string)(products []*productentity.ProductMain, err error)
 // }
 
+<<<<<<< HEAD
 func (p *ProductService)CreateCategory(ctx context.Context, 
 	req *productentity.CreateCategoryReq) (productentity.GeneralResponseProduct, error) {
 	
@@ -65,3 +71,46 @@ func (p *ProductService)DeleteCategory(ctx context.Context, req *productentity.D
 
 	return &req1,nil
 }
+=======
+func (p *ProductService) CreateProduct(ctx context.Context, req *productentity.CreateProductReq) (res *productentity.ProductMain, err error) {
+	res1, err := p.O.ProductService().CreateProduct(ctx, p.Req.CreateProductReq(req))
+	if err != nil {
+		return nil, err
+	}
+	return p.Res.MainProduct(res1), nil
+}
+
+func (p *ProductService) AddModel(ctx context.Context, req *productentity.AddModelReq) (res *productentity.Product, err error) {
+	res1, err := p.O.ProductService().AddModel(ctx, p.Req.AddModelReq(req))
+	if err != nil {
+		return nil, err
+	}
+	return p.Res.Product(res1), nil
+}
+
+func (p *ProductService) GetAllProduct(ctx context.Context, req *productentity.GetProductsReq) (res *productentity.GetProductsRes, err error) {
+	res1, err := p.O.ProductService().GetAllProduct(ctx, p.Req.GetProductsReq(req))
+	if err != nil {
+		return nil, err
+	}
+	return p.Res.Products(res1, res1.Count), nil
+}
+
+func (p *ProductService) UpdateProduct(ctx context.Context, req *productentity.UpdateProductReq) (res *productentity.Product, err error) {
+	res1, err := p.O.ProductService().UpdateProduct(ctx, p.Req.UpdateProductReq(req))
+	if err != nil {
+		return nil, err
+	}
+	return p.Res.Product(res1), nil
+}
+
+func (p *ProductService) DeleteProduct(ctx context.Context, req *productentity.DeleteProductReq) (res *productentity.GeneralResponseProduct, err error) {
+	res1, err := p.O.ProductService().DeleteProduct(ctx, p.Req.DeleteProductReq(req))
+	if err != nil {
+		return nil, err
+	}
+	res2 := p.Res.GeneralResponseProduct(res1)
+	return &res2, nil
+}
+>>>>>>> f5291bbd6c0dc3237d7e359bb80a6320cf5aae5b
+``
