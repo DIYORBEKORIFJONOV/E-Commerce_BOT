@@ -48,16 +48,31 @@ func (p *AdjustResponse) GeneralResponseProduct(pb *productpb.GeneralResponsePro
 
 // --- List conversions ---
 
-func (p *AdjustResponse) Products(pbProducts []*productpb.Product, count int64) *productentity.GetProductsRes {
-  products := make([]productentity.Product, 0, len(pbProducts))
-  for _, pb := range pbProducts {
-    products = append(products, *p.Product(pb))
+func (p *AdjustResponse) Products(pbProducts *productpb.GetProductsRes, count int64) *productentity.GetProductsRes {
+  products := make([]productentity.Product, 0, len(pbProducts.Product))
+  for _, pb := range pbProducts.Product {
+    if pb != nil {
+      products = append(products, productentity.Product{
+        ProductID:     pb.ProductId,
+        MainProductId: pb.MainProductId,
+        PhotoURL:      pb.Photourl,
+        Colour:        pb.Colour,
+        Size:          pb.Size,
+        Price:         pb.Price,
+        Quantity:      pb.Quantity,
+        Description:   pb.Description,
+        CreatedAt:     pb.Createdat,
+        UpdatedAt:     pb.Updatedat,
+      })
+    }
   }
+
   return &productentity.GetProductsRes{
     Products: products,
     Count:    count,
   }
 }
+
 
 func (p *AdjustResponse) MainProducts(pbProducts []*productpb.MainProduct, count int64) []productentity.ProductMain {
   products := make([]productentity.ProductMain, 0, len(pbProducts))
