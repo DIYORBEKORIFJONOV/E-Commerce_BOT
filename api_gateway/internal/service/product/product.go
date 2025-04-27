@@ -15,19 +15,7 @@ type ProductService struct {
 	Res *adjustresponseproduct.AdjustResponse
 }
 
-// type productUseCase interface {
-// 	CreateProduct(ctx context.Context, req *productentity.CreateProductReq) (res *productentity.ProductMain, err error)
-// 	AddModel(ctx context.Context, req *productentity.AddModelReq) (product *productentity.Product, err error)
-// 	GetAllProduct(ctx context.Context, req *productentity.GetProductsReq) (products *productentity.GetProductsRes, err error)
-// 	UpdateProduct(ctx context.Context, req *productentity.UpdateProductReq) (product *productentity.Product, err error)
-// 	DeleteProduct(ctx context.Context, req *productentity.DeleteProductReq) (res *productentity.GeneralResponseProduct, err error)
-// 	CreateCategory(ctx context.Context, req *productentity.CreateCategoryReq) (res *productentity.GeneralResponseProduct, err error)
-// 	GetAllCategory(ctx context.Context) (categories *productentity.GetcategoriesRes, err error)
-// 	UpdateCategory(ctx context.Context, req *productentity.UpdateCategoryReq) (res *productentity.GeneralResponseProduct, err error)
-// 	DeleteCategory(ctx context.Context, req *productentity.DeleteCategoryReq) (res *productentity.GeneralResponseProduct, err error)
-// 	UpdateName(ctx context.Context, req *productentity.UpdateNameReq) (res *productentity.GeneralResponseProduct, err error)
-// 	GetMainProduct(ctx context.Context,field,value string)(products []*productentity.ProductMain, err error)
-// }
+
 
 func (p *ProductService) CreateProduct(ctx context.Context, req *productentity.CreateProductReq) (res *productentity.ProductMain, err error) {
 	res1, err := p.O.ProductService().CreateProduct(ctx, p.Req.CreateProductReq(req))
