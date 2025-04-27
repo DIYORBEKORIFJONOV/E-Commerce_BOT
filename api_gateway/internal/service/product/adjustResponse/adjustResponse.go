@@ -1,11 +1,11 @@
-package adjustresponse
+package adjustresponseproduct
 
 import (
 	productentity "api_gateway/internal/entity/product"
 	productpb "api_gateway/pkg/protos/gen/product"
 )
 
-// --- Single conversions ---
+
 
 func Product(pb *productpb.Product) *productentity.Product {
 	if pb == nil {

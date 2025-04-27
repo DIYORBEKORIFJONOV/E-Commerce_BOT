@@ -1,4 +1,4 @@
-package adjustrequest
+package adjustrequestproduct
 
 import (
 	productentity "api_gateway/internal/entity/product"
