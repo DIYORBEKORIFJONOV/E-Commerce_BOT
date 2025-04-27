@@ -5,9 +5,9 @@ import (
 	productpb "api_gateway/pkg/protos/gen/product"
 )
 
+type AdjustResponse struct{}
 
-
-func Product(pb *productpb.Product) *productentity.Product {
+func (p *AdjustResponse) Product(pb *productpb.Product) *productentity.Product {
 	if pb == nil {
 		return nil
 	}
@@ -25,7 +25,7 @@ func Product(pb *productpb.Product) *productentity.Product {
 	}
 }
 
-func MainProduct(pb *productpb.MainProduct) *productentity.ProductMain {
+func (p *AdjustResponse) MainProduct(pb *productpb.MainProduct) *productentity.ProductMain {
 	if pb == nil {
 		return nil
 	}
@@ -36,11 +36,11 @@ func MainProduct(pb *productpb.MainProduct) *productentity.ProductMain {
 	}
 }
 
-func GeneralResponseProduct(pb *productpb.GeneralResponseProduct) *productentity.GeneralResponseProduct {
+func (p *AdjustResponse) GeneralResponseProduct(pb *productpb.GeneralResponseProduct) productentity.GeneralResponseProduct {
 	if pb == nil {
-		return nil
+		return productentity.GeneralResponseProduct{}
 	}
-	return &productentity.GeneralResponseProduct{
+	return productentity.GeneralResponseProduct{
 		Status:  pb.Status,
 		Message: pb.Message,
 	}
@@ -48,28 +48,42 @@ func GeneralResponseProduct(pb *productpb.GeneralResponseProduct) *productentity
 
 // --- List conversions ---
 
-func Products(pbProducts []*productpb.Product, count int64) *productentity.GetProductsRes {
-	products := make([]productentity.Product, 0, len(pbProducts))
-	for _, pb := range pbProducts {
-		products = append(products, *Product(pb))
+func (p *AdjustResponse) Products(pbProducts *productpb.GetProductsRes, count int64) *productentity.GetProductsRes {
+	products := make([]productentity.Product, 0, len(pbProducts.Product))
+	for _, pb := range pbProducts.Product {
+		if pb != nil {
+			products = append(products, productentity.Product{
+				ProductID:     pb.ProductId,
+				MainProductId: pb.MainProductId,
+				PhotoURL:      pb.Photourl,
+				Colour:        pb.Colour,
+				Size:          pb.Size,
+				Price:         pb.Price,
+				Quantity:      pb.Quantity,
+				Description:   pb.Description,
+				CreatedAt:     pb.Createdat,
+				UpdatedAt:     pb.Updatedat,
+			})
+		}
 	}
+
 	return &productentity.GetProductsRes{
 		Products: products,
 		Count:    count,
 	}
 }
 
-func MainProducts(pbProducts []*productpb.MainProduct, count int64) []productentity.ProductMain {
+func (p *AdjustResponse) MainProducts(pbProducts []*productpb.MainProduct, count int64) []productentity.ProductMain {
 	products := make([]productentity.ProductMain, 0, len(pbProducts))
 	for _, pb := range pbProducts {
 		if pb != nil {
-			products = append(products, *MainProduct(pb))
+			products = append(products, *p.MainProduct(pb))
 		}
 	}
 	return products
 }
 
-func Categories(pbCategories []*productpb.CreateCategoryReq, count int64) *productentity.GetcategoriesRes {
+func (p *AdjustResponse) Categories(pbCategories []*productpb.CreateCategoryReq, count int64) *productentity.GetcategoriesRes {
 	categories := make([]*productentity.CreateCategoryReq, 0, len(pbCategories))
 	for _, pb := range pbCategories {
 		categories = append(categories, &productentity.CreateCategoryReq{
