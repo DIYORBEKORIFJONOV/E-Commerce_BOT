@@ -356,3 +356,30 @@
 {"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-20T12:45:36+05:00","message":"getting successfuly"}
 {"level":"warn","service":"payment-service","operation":"product-service","time":"2025-04-20T20:35:59+05:00","message":"received shutdown signal interrupt"}
 {"level":"info","service":"payment-service","operation":"product-service","time":"2025-04-20T20:35:59+05:00","message":"shuttin down server"}
+{"level":"info","service":"payment-service","operation":"product-service","time":"2025-04-26T17:51:46+05:00","message":"Product server started"}
+{"level":"info","service":"payment-service","HOST":"localhost:9000","time":"2025-04-26T17:51:46+05:00","message":"Starting gRpc Server"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T18:20:57+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T18:21:09+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T18:21:11+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T18:26:11+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"CreateCategory","time":"2025-04-26T21:56:24+05:00","message":"category successfuly created"}
+{"level":"info","service":"payment-service","categtory":"snikers","operation":"CreateProduct","product":"nike","time":"2025-04-26T21:57:19+05:00","message":"Product succsessfuly created"}
+{"level":"info","service":"payment-service","productId":"b5ad9575-8b31-4342-93d6-467d4bc7682e","operation":"AddModel","time":"2025-04-26T21:59:01+05:00","message":"model successfulty added"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T22:00:19+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T22:00:31+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T22:02:12+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T22:15:42+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T22:16:10+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T22:17:05+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T22:41:25+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T22:41:28+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T22:41:30+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T22:50:44+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T22:50:49+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T22:53:44+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T22:53:44+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T22:53:45+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T23:05:51+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"GetAllProduct","time":"2025-04-26T23:12:21+05:00","message":"getting successfuly"}
+{"level":"info","service":"payment-service","operation":"product-service","time":"2025-04-27T14:10:50+05:00","message":"Product server started"}
+{"level":"info","service":"payment-service","HOST":"localhost:9000","time":"2025-04-27T14:10:50+05:00","message":"Starting gRpc Server"}
