@@ -4,7 +4,6 @@ import (
 	"context"
 	"log"
 	"log/slog"
-	"time"
 
 	htppapp "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/app/htpp"
 	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/config"
@@ -36,20 +35,25 @@ func NewApp(logger *slog.Logger, cfg *config.Config) *App {
 	serviceOrder := orderservice.NewOrderService(addJustReq, addJustRes, &clientGrpc)
 	orderServiceIml := usecaseorder.NewOrderService(serviceOrder)
 	var minio_client *minio.Client
-	for i := 0; i <10; i++ {
-		minio_client, err = minio.New("127.0.0.:9000", &minio.Options{
+	url1 := "172.23.0.2:9000"
+	url2 := "172.22.0.2:9000"
+	flag := true
+	minio_client, err = minio.New(url1, &minio.Options{
+		Creds:  credentials.NewStaticV4("admin", "secretpass", ""),
+		Secure: false,
+	})
+	if err != nil {
+		flag = false
+		log.Fatal(err)
+	}
+	if !flag {
+		minio_client, err = minio.New(url2, &minio.Options{
 			Creds:  credentials.NewStaticV4("admin", "secretpass", ""),
 			Secure: false,
 		})
 		if err != nil {
-			log.Println(err)
-			time.Sleep(time.Second * 1)
-			continue
+			log.Fatal(err)
 		}
-		break
-	}
-	if err != nil {
-		log.Fatal(err)
 	}
 
 	if err := createBucket(minio_client, "products"); err != nil {
