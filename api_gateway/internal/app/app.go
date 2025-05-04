@@ -37,7 +37,7 @@ func NewApp(logger *slog.Logger, cfg *config.Config) *App {
 	orderServiceIml := usecaseorder.NewOrderService(serviceOrder)
 	var minio_client *minio.Client
 	for i := 0; i <10; i++ {
-		minio_client, err = minio.New("172.18.0.2:9000", &minio.Options{
+		minio_client, err = minio.New("172.22.0.2:9000", &minio.Options{
 			Creds:  credentials.NewStaticV4("admin", "secretpass", ""),
 			Secure: false,
 		})
