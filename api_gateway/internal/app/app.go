@@ -35,25 +35,12 @@ func NewApp(logger *slog.Logger, cfg *config.Config) *App {
 	serviceOrder := orderservice.NewOrderService(addJustReq, addJustRes, &clientGrpc)
 	orderServiceIml := usecaseorder.NewOrderService(serviceOrder)
 	var minio_client *minio.Client
-	url1 := "172.23.0.2:9000"
-	url2 := "172.22.0.2:9000"
-	flag := true
-	minio_client, err = minio.New("localhost:9000", &minio.Options{
+	minio_client, err = minio.New("minio:9000", &minio.Options{
 		Creds:  credentials.NewStaticV4("admin", "secretpass", ""),
 		Secure: false,
 	})
 	if err != nil {
-		flag = false
 		log.Fatal(err)
-	}
-	if !flag {
-		minio_client, err = minio.New(url2, &minio.Options{
-			Creds:  credentials.NewStaticV4("admin", "secretpass", ""),
-			Secure: false,
-		})
-		if err != nil {
-			log.Fatal(err)
-		}
 	}
 
 	if err := createBucket(minio_client, "products"); err != nil {
