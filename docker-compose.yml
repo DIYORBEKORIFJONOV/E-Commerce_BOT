@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  api_gateway:
+    build: ./api_gateway
+    container_name: api_gateway1
+    ports:
+      - 8080:8080
+    depends_on:
+      - orderservice
+      - product-service
+      - mongo
+      - minio
+    networks:
+      - ecommerce
+
+  orderservice:
+    build: ./OrderService
+    container_name: orderservice_container
+    image: orderservice_image
+    ports:
+      - 8082:8082
+    depends_on:
+      - mongo
+    networks:
+      - ecommerce
+
+  product-service:
+    build: ./product-service
+    container_name: product-service_container
+    image: product-service_image
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongo
+    networks:
+      - ecommerce
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-db-data:/data/db
+    networks:
+      - ecommerce
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"   # API
+      - "9001:9001"   # Console
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio-db-data:/data/db
+    networks:
+      - ecommerce
+
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    entrypoint: >
+      /bin/sh -c "
+        sleep 5;
+        mc alias set local http://minio:9000 minioadmin minioadmin;
+        mc mb local/products;
+      "
+    networks:
+      - ecommerce
+
+networks:
+  ecommerce:
+    driver: bridge
+
+volumes:
+  mongo-db-data:
+  minio-db-data:

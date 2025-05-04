@@ -34,7 +34,7 @@ func NewApp(logger *slog.Logger, cfg *config.Config) *App {
 	orderServiceIml := usecaseorder.NewOrderService(serviceOrder)
 
 
-	minClien,err := minao1.NewClient("localhost:9005", "minioadmin", "minioadmin", "products",false)
+	minClien,err := minao1.NewClient("minio:9000", "minioadmin", "minioadmin", "products",false)
 	if err != nil {
 		log.Fatal(err)
 	}

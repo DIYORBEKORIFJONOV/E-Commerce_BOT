@@ -21,7 +21,7 @@ func Configuration() *Config {
 	c.Database.DBname = osGetenv("DB_NAME", "orders")
 
 	c.User.Host = osGetenv("USER_HOST", "tcp")
-	c.User.Port = osGetenv("USER_PORT", ":9001")
+	c.User.Port = osGetenv("USER_PORT", "orderservice:8082")
 
 	return c
 }
