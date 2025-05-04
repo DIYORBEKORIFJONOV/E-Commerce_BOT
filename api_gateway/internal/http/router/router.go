@@ -21,7 +21,7 @@ func RegisterRouter(
 ) *gin.Engine {
     r := gin.Default()
     r.Use(middleware.CorsMiddleware())
-    r.Use(middleware.IPFilterMiddleware([]string{"127.0.0.1","172.18.0.1"}))
+    r.Use(middleware.IPFilterMiddleware([]string{"127.0.0.1","172.18.0.1","192.168.12.135"}))
     r.Use(middleware.TimingMiddleware())
 
     // Swagger UI
