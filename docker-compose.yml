@@ -3,7 +3,7 @@ version: '3.8'
 services:
   api_gateway:
     build: ./api_gateway
-    container_name: api_gateway1
+    container_name: api_gateway
     ports:
       - 8080:8080
     depends_on:
@@ -15,7 +15,7 @@ services:
       - ecommerce
 
   orderservice:
-    build: ./OrderService
+    build: ./OrderServiceBot
     container_name: orderservice_container
     image: orderservice_image
     ports:
@@ -48,29 +48,36 @@ services:
     image: minio/minio:latest
     container_name: minio
     ports:
-      - "9000:9000"   # API
-      - "9001:9001"   # Console
+      - "9000:9000"
+      - "9001:9001"
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
     command: server /data --console-address ":9001"
     volumes:
       - minio-db-data:/data/db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/ready"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
     networks:
       - ecommerce
 
   minio-init:
     image: minio/mc:latest
     depends_on:
-      - minio
+      minio:
+        condition: service_healthy
     entrypoint: >
       /bin/sh -c "
         sleep 5;
         mc alias set local http://minio:9000 minioadmin minioadmin;
-        mc mb local/products;
+        mc mb local/products || true;
       "
     networks:
       - ecommerce
+
 
 networks:
   ecommerce:
