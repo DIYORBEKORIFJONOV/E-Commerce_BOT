@@ -40,9 +40,9 @@ services:
 
   mongo:
     image: mongo:latest
-    container_name: mongo
+    container_name: mongo_e_commerce
     ports:
-      - "27018:27017"
+      - "27020:27017"
     volumes:
       - mongo-db-data:/data/db
     networks:
