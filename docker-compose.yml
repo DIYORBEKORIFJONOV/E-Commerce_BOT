@@ -3,7 +3,7 @@ services:
     build: ./api_gateway
     container_name: api_gateway
     ports:
-      - 8080:8080
+      - 8085:8083
     depends_on:
       orderservice:
         condition: service_started
@@ -13,8 +13,8 @@ services:
         condition: service_started
       minio:
         condition: service_healthy
-    networks:
-      - ecommerce
+    networks: 
+      - ecommerce  # Используем сеть хоста для доступа к localhost:9003
 
   orderservice:
     build: ./OrderServiceBot
@@ -62,7 +62,7 @@ services:
       - "9003:9000"
       - "9001:9001"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]  # Локальный порт внутри контейнера MinIO
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]  # Обновлен порт для хоста
       interval: 10s
       timeout: 5s
       retries: 3
