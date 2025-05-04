@@ -16,7 +16,7 @@ type App struct {
 	Server *gin.Engine
 }
 
-func NewApp(logger *slog.Logger, port string, botIml *usecaseorder.OrderUseCaseIml,minioPhoto *minao1.Client,productUsceIml *productusecase.ProductUseCaseIml) *App {
+func NewApp(logger *slog.Logger, port string, botIml *usecaseorder.OrderUseCaseIml,minioPhoto *minao1.FileStorage,productUsceIml *productusecase.ProductUseCaseIml) *App {
 	sever := router.RegisterRouter(botIml,productUsceIml,minioPhoto)
 	return &App{
 		Port:   port,

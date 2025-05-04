@@ -1,90 +1,124 @@
 package minao1
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"log"
 	"mime/multipart"
-	"net/url"
-	"path/filepath"
-	"strings"
 	"time"
 
-	"github.com/google/uuid"
+	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/config"
 	"github.com/minio/minio-go/v7"
-	"github.com/minio/minio-go/v7/pkg/credentials"
 )
 
+type (
+	FileStorage struct {
+		cfg          *config.Config
+		minio_client *minio.Client
+	}
+)
 
-type Client struct {
-    mc         *minio.Client
-    bucketName string
-}
-
-
-func NewClient(endpoint, accessKey, secretKey, bucketName string, useSSL bool) (*Client, error) {
-    mc, err := minio.New(endpoint, &minio.Options{
-        Creds:  credentials.NewStaticV4(accessKey, secretKey, ""),
-        Secure: useSSL,
-    })
-    if err != nil {
-        return nil, err
+func NewFileStorage(cfg *config.Config, minio_client *minio.Client) *FileStorage {
+    fs := &FileStorage{
+        cfg:          cfg,
+        minio_client: minio_client,
     }
 
-    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-    defer cancel()
-
-    exists, err := mc.BucketExists(ctx, bucketName)
+    bucketName := "products"
+    ctx := context.Background()
+    exists, err := minio_client.BucketExists(ctx, bucketName)
     if err != nil {
-        return nil, err
+        log.Fatalf("Failed to check if bucket exists: %v", err)
     }
     if !exists {
-        if err := mc.MakeBucket(ctx, bucketName, minio.MakeBucketOptions{}); err != nil {
-            return nil, err
+        err = minio_client.MakeBucket(ctx, bucketName, minio.MakeBucketOptions{})
+        if err != nil {
+            log.Fatalf("Failed to create bucket: %v", err)
         }
-        log.Println("Created bucket", bucketName)
+        log.Printf("Bucket %s created successfully", bucketName)
     }
 
-    return &Client{mc: mc, bucketName: bucketName}, nil
-}
-func (c *Client) AddPhoto(ctx context.Context, fileHeader *multipart.FileHeader) (string, error) {
-    ext := strings.ToLower(filepath.Ext(fileHeader.Filename))
-    if ext != ".png" && ext != ".jpg" {
-        return "", fmt.Errorf("only .png or .jpg files are allowed")
-    }
-
-    src, err := fileHeader.Open()
-    if err != nil {
-        log.Fatal("2")
-        return "", err
-    }
-    defer src.Close()
-
-    objectName := uuid.New().String() + ext
-
-    _, err = c.mc.PutObject(ctx,
-        c.bucketName,
-        objectName,
-        src,
-        fileHeader.Size,
-        minio.PutObjectOptions{ContentType: fileHeader.Header.Get("Content-Type")},
-    )
-    if err != nil {
-        log.Fatal("3")
-        return "", err
-    }
-
-    return objectName, nil
+    return fs
 }
 
-func (c *Client) GetPhotoURL(ctx context.Context, objectName string) (string, error) {
+func (s *FileStorage) UploadFile(file *multipart.FileHeader) (string, error) {
 
-    reqParams := make(url.Values)
+	// Open file
+	f, err := file.Open()
+	if err != nil {
+		return "", fmt.Errorf("cannot open file: %s", err.Error())
+	}
+	defer f.Close()
 
-    // Сгенерировать URL с 24-часовым сроком действия
-    presignedURL, err := c.mc.PresignedGetObject(ctx, c.bucketName, objectName, 24*time.Hour, reqParams)
-    if err != nil {
-        return "", err
-    }
-    return presignedURL.String(), nil
+	// Generate unique filename
+	filename := fmt.Sprintf("%d", time.Now().UnixMilli())
+
+	// Upload file to MinIO
+	_, err = s.minio_client.PutObject(
+		context.Background(),
+		"products",
+		filename,
+		f,
+		file.Size,
+		minio.PutObjectOptions{ContentType: file.Header.Get("Content-Type")},
+	)
+	if err != nil {
+		return "", fmt.Errorf("failed to upload file: %s", err.Error())
+	}
+
+	return filename, nil
+}
+
+func (s *FileStorage) UploadFileFromBytes(data []byte, contentType string) (string, error) {
+	// Create a reader from the raw bytes
+	reader := bytes.NewReader(data)
+	filename := fmt.Sprintf("%d", time.Now().UnixMilli())
+
+	// Upload file to MinIO
+	_, err := s.minio_client.PutObject(
+		context.Background(),
+		"products",
+		filename,
+		reader,
+		int64(len(data)),
+		minio.PutObjectOptions{ContentType: contentType},
+	)
+	if err != nil {
+		return "", fmt.Errorf("failed to upload file from bytes: %s", err.Error())
+	}
+
+	return s.GetFile(filename)
+}
+func (s *FileStorage) GetFile(filename string) (string, error) {
+	// Check if the file exists
+	_, err := s.minio_client.StatObject(context.Background(), "products", filename, minio.StatObjectOptions{})
+	if err != nil {
+		return "", fmt.Errorf("file not found: %s", err.Error())
+	}
+
+	// Generate pre-signed URL
+	expiry := time.Hour * 24
+	url, err := s.minio_client.PresignedGetObject(context.Background(), "products", filename, expiry, nil)
+	if err != nil {
+		return "", fmt.Errorf("failed to get file: %s", err.Error())
+	}
+
+	return url.String(), nil
+}
+
+func (s *FileStorage) DeleteFile(filename string) error {
+	// Check if the file exists before attempting deletion
+	_, err := s.minio_client.StatObject(context.Background(),"products", filename, minio.StatObjectOptions{})
+	if err != nil {
+		return fmt.Errorf("file not found: %s", err.Error())
+	}
+
+	// Delete file from MinIO
+	err = s.minio_client.RemoveObject(context.Background(), "products", filename, minio.RemoveObjectOptions{})
+	if err != nil {
+		return fmt.Errorf("failed to delete file: %s", err.Error())
+	}
+
+	return nil
 }

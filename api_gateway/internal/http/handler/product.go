@@ -1,7 +1,7 @@
-// file: internal/http/handler/product.go
 package handler
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
@@ -14,18 +14,18 @@ import (
 
 // ProductHandler хранит зависимости для product-эндпоинтов
 type ProductHandler struct {
-    product    *productusecase.ProductUseCaseIml
-    minioPhoto *minao1.Client
+	product    *productusecase.ProductUseCaseIml
+	minioPhoto *minao1.FileStorage
 }
 
 func NewProductHandler(
-    productUC *productusecase.ProductUseCaseIml,
-    minioClient *minao1.Client,
+	productUC *productusecase.ProductUseCaseIml,
+	minioClient *minao1.FileStorage,
 ) *ProductHandler {
-    return &ProductHandler{
-        product:    productUC,
-        minioPhoto: minioClient,
-    }
+	return &ProductHandler{
+		product:    productUC,
+		minioPhoto: minioClient,
+	}
 }
 
 // CreateProduct godoc
@@ -40,18 +40,19 @@ func NewProductHandler(
 // @Failure      500      {object}  productentity.ErrorResponse    "Internal Server Error"
 // @Router       /products [post]
 func (p *ProductHandler) CreateProduct(c *gin.Context) {
-    var req productentity.CreateProductReq
-    if err := c.ShouldBindJSON(&req); err != nil {
-        c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    mainProduct, err := p.product.CreateProduct(c.Request.Context(), &req)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    c.JSON(http.StatusCreated, mainProduct)
+	var req productentity.CreateProductReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	mainProduct, err := p.product.CreateProduct(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, mainProduct)
 }
+
 // AddModel godoc
 // @Summary      Добавляет модель товара с фото
 // @Description  Принимает form-data: все поля AddModelReq + файл photo
@@ -70,65 +71,63 @@ func (p *ProductHandler) CreateProduct(c *gin.Context) {
 // @Failure      500 {object} productentity.ErrorResponse          "Ошибка сервера"
 // @Router       /products/addmodel [post]
 func (p *ProductHandler) AddModel(c *gin.Context) {
-    var req productentity.AddModelReq
+	var req productentity.AddModelReq
 
-    // Строковые поля
-    req.MainProductId = c.PostForm("mainproductId")
-    req.Description   = c.PostForm("description")
-    req.Colour        = c.PostForm("colour")
+	req.MainProductId = c.PostForm("mainproductId")
+	req.Description = c.PostForm("description")
+	req.Colour = c.PostForm("colour")
 
-    // Размер (int32)
-    if sizeStr := c.PostForm("size"); sizeStr != "" {
-        size, err := strconv.Atoi(sizeStr)
-        if err != nil {
-            c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: "invalid size"})
-            return
-        }
-        req.Size = int32(size)
-    }
+	if sizeStr := c.PostForm("size"); sizeStr != "" {
+		size, err := strconv.Atoi(sizeStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: "invalid size"})
+			return
+		}
+		req.Size = int32(size)
+	}
 
-    // Цена (float32)
-    if priceStr := c.PostForm("price"); priceStr != "" {
-        price, err := strconv.ParseFloat(priceStr, 32)
-        if err != nil {
-            c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: "invalid price"})
-            return
-        }
-        req.Price = float32(price)
-    }
+	if priceStr := c.PostForm("price"); priceStr != "" {
+		price, err := strconv.ParseFloat(priceStr, 32)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: "invalid price"})
+			return
+		}
+		req.Price = float32(price)
+	}
 
-    // Количество (int32)
-    if qtyStr := c.PostForm("quantity"); qtyStr != "" {
-        qty, err := strconv.Atoi(qtyStr)
-        if err != nil {
-            c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: "invalid quantity"})
-            return
-        }
-        req.Quantity = int32(qty)
-    }
+	if qtyStr := c.PostForm("quantity"); qtyStr != "" {
+		qty, err := strconv.Atoi(qtyStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: "invalid quantity"})
+			return
+		}
+		req.Quantity = int32(qty)
+	}
 
-    // Файл фото
-    fileHeader, err := c.FormFile("photo")
-    if err != nil {
-        c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: "photo is required"})
-        return
-    }
-    objectName, err := p.minioPhoto.AddPhoto(c.Request.Context(), fileHeader)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    req.PhotoURL = objectName
+	if p.minioPhoto == nil {
+		c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: "MinIO client is not initialized"})
+		return
+	}
 
-    // Сохранение модели
-    product, err := p.product.AddModel(c.Request.Context(), &req)
-    if err != nil {
-        c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    c.JSON(http.StatusCreated, product)
+	fileHeader, err := c.FormFile("photo")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: "photo is required"})
+		return
+	}
+	objectName, err := p.minioPhoto.UploadFile(fileHeader)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	req.PhotoURL = objectName
+
+	product, err := p.product.AddModel(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	c.JSON(http.StatusCreated, product)
 }
-
 
 // UpdateProductName godoc
 // @Summary      Update product name
@@ -142,17 +141,17 @@ func (p *ProductHandler) AddModel(c *gin.Context) {
 // @Failure      500      {object}  productentity.ErrorResponse         "Internal Server Error"
 // @Router       /products/name [put]
 func (p *ProductHandler) UpdateProductName(c *gin.Context) {
-    var req productentity.UpdateNameReq
-    if err := c.ShouldBindJSON(&req); err != nil {
-        c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    generalRes, err := p.product.UpdateName(c.Request.Context(), &req)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    c.JSON(http.StatusOK, generalRes)
+	var req productentity.UpdateNameReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	generalRes, err := p.product.UpdateName(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, generalRes)
 }
 
 // GetMainProduct godoc
@@ -167,15 +166,16 @@ func (p *ProductHandler) UpdateProductName(c *gin.Context) {
 // @Failure      500    {object}  productentity.ErrorResponse
 // @Router       /products/main [get]
 func (p *ProductHandler) GetMainProduct(c *gin.Context) {
-    field := c.Query("field")
-    value := c.Query("value")
-    mainProducts, err := p.product.GetMainProduct(c.Request.Context(), field, value)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    c.JSON(http.StatusOK, mainProducts)
+	field := c.Query("field")
+	value := c.Query("value")
+	mainProducts, err := p.product.GetMainProduct(c.Request.Context(), field, value)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, mainProducts)
 }
+
 // GetAllProduct godoc
 // @Summary      Список продуктов
 // @Description  Получить список продуктов с фильтрацией и пагинацией
@@ -191,41 +191,40 @@ func (p *ProductHandler) GetMainProduct(c *gin.Context) {
 // @Failure      500     {object}  productentity.ErrorResponse     "Внутренняя ошибка сервера"
 // @Router       /products [get]
 func (p *ProductHandler) GetAllProduct(c *gin.Context) {
-    var req productentity.GetProductsReq
-    if err := c.ShouldBindQuery(&req); err != nil {
-        c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
+	var req productentity.GetProductsReq
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
 
-    // 1. Получаем продукты и общее количество
-    resp, err := p.product.GetAllProduct(c.Request.Context(), &req)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
+	resp, err := p.product.GetAllProduct(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
 
-    // 2. Если нет продуктов — сразу возвращаем пустой список
-    if len(resp.Products) == 0 {
-        c.JSON(http.StatusOK, resp)
-        return
-    }
+	if len(resp.Products) == 0 {
+		c.JSON(http.StatusOK, resp)
+		return
+	}
 
-    // 3. Для каждого продукта генерируем подписанный URL для фото
-    for i, prod := range resp.Products {
-        signedURL, err := p.minioPhoto.GetPhotoURL(c.Request.Context(), prod.PhotoURL)
-        if err != nil {
-            // Логируем ошибку, но не прерываем весь запрос
-            c.Error(err) // Gin автоматически залогирует ошибку
-            signedURL = ""
-        }
-        resp.Products[i].PhotoURL = signedURL
-    }
+	if p.minioPhoto == nil {
+		c.JSON(http.StatusOK, resp)
+		return
+	}
 
-    // 4. Возвращаем итоговый JSON
-    c.JSON(http.StatusOK, resp)
+	for i, prod := range resp.Products {
+		log.Println(prod.PhotoURL)
+		signedURL, err := p.minioPhoto.GetFile(prod.PhotoURL)
+		if err != nil {
+			c.Error(err)
+			signedURL = ""
+		}
+		resp.Products[i].PhotoURL = signedURL
+	}
+
+	c.JSON(http.StatusOK, resp)
 }
-
-
 
 // UpdateProduct godoc
 // @Summary      Partially update product
@@ -243,26 +242,31 @@ func (p *ProductHandler) GetAllProduct(c *gin.Context) {
 // @Failure      500          {object} productentity.ErrorResponse  "Internal Server Error"
 // @Router       /products [patch]
 func (p *ProductHandler) UpdateProduct(c *gin.Context) {
-    var req productentity.UpdateProductReq
-    if err := c.ShouldBind(&req); err != nil {
-        c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    fileHeader, err := c.FormFile("photo")
-    if err == nil {
-        objectName, err := p.minioPhoto.AddPhoto(c.Request.Context(), fileHeader)
-        if err != nil {
-            c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
-            return
-        }
-        req.PhotoURL = objectName
-    }
-    product, err := p.product.UpdateProduct(c.Request.Context(), &req)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    c.JSON(http.StatusOK, product)
+	var req productentity.UpdateProductReq
+	if err := c.ShouldBind(&req); err != nil {
+		c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+
+	if fileHeader, err := c.FormFile("photo"); err == nil {
+		if p.minioPhoto == nil {
+			c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: "MinIO client is not initialized"})
+			return
+		}
+		objectName, err := p.minioPhoto.UploadFile(fileHeader)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
+			return
+		}
+		req.PhotoURL = objectName
+	}
+
+	product, err := p.product.UpdateProduct(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, product)
 }
 
 // DeleteProduct godoc
@@ -277,17 +281,17 @@ func (p *ProductHandler) UpdateProduct(c *gin.Context) {
 // @Failure      500      {object}  productentity.ErrorResponse          "Internal Server Error"
 // @Router       /products [delete]
 func (p *ProductHandler) DeleteProduct(c *gin.Context) {
-    var req productentity.DeleteProductReq
-    if err := c.ShouldBindJSON(&req); err != nil {
-        c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    res, err := p.product.DeleteProduct(c.Request.Context(), &req)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    c.JSON(http.StatusOK, res)
+	var req productentity.DeleteProductReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	res, err := p.product.DeleteProduct(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, res)
 }
 
 // CreateCategory godoc
@@ -302,17 +306,17 @@ func (p *ProductHandler) DeleteProduct(c *gin.Context) {
 // @Failure      500      {object}  productentity.ErrorResponse          "Internal Server Error"
 // @Router       /products/categories [post]
 func (p *ProductHandler) CreateCategory(c *gin.Context) {
-    var req productentity.CreateCategoryReq
-    if err := c.ShouldBindJSON(&req); err != nil {
-        c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    generalRes, err := p.product.CreateCategory(c.Request.Context(), &req)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    c.JSON(http.StatusOK, generalRes)
+	var req productentity.CreateCategoryReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	generalRes, err := p.product.CreateCategory(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, generalRes)
 }
 
 // GetAllCategory godoc
@@ -325,12 +329,12 @@ func (p *ProductHandler) CreateCategory(c *gin.Context) {
 // @Failure      500  {object}  productentity.ErrorResponse       "Internal Server Error"
 // @Router       /products/categories [get]
 func (p *ProductHandler) GetAllCategory(c *gin.Context) {
-    categories, err := p.product.GetAllCategory(c.Request.Context())
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    c.JSON(http.StatusOK, categories)
+	categories, err := p.product.GetAllCategory(c.Request.Context())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, categories)
 }
 
 // UpdateCategory godoc
@@ -345,17 +349,17 @@ func (p *ProductHandler) GetAllCategory(c *gin.Context) {
 // @Failure      500      {object}  productentity.ErrorResponse          "Internal Server Error"
 // @Router       /products/categories [put]
 func (p *ProductHandler) UpdateCategory(c *gin.Context) {
-    var req productentity.UpdateCategoryReq
-    if err := c.ShouldBindJSON(&req); err != nil {
-        c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    generalRes, err := p.product.UpdateCategory(c.Request.Context(), &req)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    c.JSON(http.StatusOK, generalRes)
+	var req productentity.UpdateCategoryReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	generalRes, err := p.product.UpdateCategory(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, generalRes)
 }
 
 // DeleteCategory godoc
@@ -370,15 +374,15 @@ func (p *ProductHandler) UpdateCategory(c *gin.Context) {
 // @Failure      500      {object}  productentity.ErrorResponse          "Internal Server Error"
 // @Router       /products/categories [delete]
 func (p *ProductHandler) DeleteCategory(c *gin.Context) {
-    var req productentity.DeleteCategoryReq
-    if err := c.ShouldBindJSON(&req); err != nil {
-        c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    generalRes, err := p.product.DeleteCategory(c.Request.Context(), &req)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
-        return
-    }
-    c.JSON(http.StatusOK, generalRes)
+	var req productentity.DeleteCategoryReq
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	generalRes, err := p.product.DeleteCategory(c.Request.Context(), &req)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, productentity.ErrorResponse{Error: err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, generalRes)
 }
