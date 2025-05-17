@@ -24,33 +24,42 @@ type App struct {
 }
 
 func NewApp(logger *slog.Logger, cfg *config.Config) *App {
+	// Инициализация gRPC клиента
 	clientGrpc, err := clientgrpcserver.NewSerevice(cfg)
 	if err != nil {
 		log.Fatalf("Failed to initialize gRPC client: %v", err)
 	}
 
+	// Order Service
 	addJustRes := adjustresponse.NewAddJsutResponse()
 	addJustReq := adjustrequest.NewAddReqeust(clientGrpc.OrderService(), clientGrpc, addJustRes)
-
 	serviceOrder := orderservice.NewOrderService(addJustReq, addJustRes, &clientGrpc)
 	orderServiceIml := usecaseorder.NewOrderService(serviceOrder)
-	var minio_client *minio.Client
-	minio_client, err = minio.New("168.119.255.188:9000", &minio.Options{
-		Creds:  credentials.NewStaticV4("admin", "secretpass", ""),
-		Secure: false,
-	})
+
+	
+	minioClient, err := minio.New("hurmomarkershoppicture.duckdns.org", &minio.Options{
+    Creds:  credentials.NewStaticV4("minioadmin", "minioadmin", ""),
+    Secure: true,
+})
 	if err != nil {
-		log.Fatal(err)
+    	log.Fatalf("Ошибка инициализации клиента MinIO: %v", err)
+	}
+	log.Println("✅ Клиент MinIO успешно инициализирован")
+
+
+	log.Println("✅ Соединение с MinIO успешно")
+
+	if err := createBucket(minioClient, "products"); err != nil {
+		log.Fatalf("Ошибка при создании бакета: %v", err)
 	}
 
-	if err := createBucket(minio_client, "products"); err != nil {
-		log.Fatal(err)
-	}
-	minClient := minao1.NewFileStorage(cfg,minio_client)
+	minClient := minao1.NewFileStorage(cfg, minioClient)
 
+	// Product Service
 	serviceProduct := product_service.NewProductReqService(&clientGrpc)
 	serviceProductIml := productusecase.NewProductUsage(serviceProduct)
 
+	// HTTP сервер
 	server := htppapp.NewApp(logger, cfg.AppPort, orderServiceIml, minClient, serviceProductIml)
 	return &App{
 		HTTPApp: server,
@@ -64,7 +73,9 @@ func createBucket(client *minio.Client, bucket string) error {
 	}
 
 	if !exists {
+		log.Printf("📦 Бакет %s не существует. Создаём...", bucket)
 		return client.MakeBucket(context.Background(), bucket, minio.MakeBucketOptions{})
 	}
+	log.Printf("📦 Бакет %s уже существует", bucket)
 	return nil
 }

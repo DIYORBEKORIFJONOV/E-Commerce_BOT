@@ -91,22 +91,21 @@ func (s *FileStorage) UploadFileFromBytes(data []byte, contentType string) (stri
 	return s.GetFile(filename)
 }
 func (s *FileStorage) GetFile(filename string) (string, error) {
-	// Check if the file exists
-	_, err := s.minio_client.StatObject(context.Background(), "products", filename, minio.StatObjectOptions{})
-	if err != nil {
-		return "", fmt.Errorf("file not found: %s", err.Error())
-	}
+    _, err := s.minio_client.StatObject(context.Background(), "products", filename, minio.StatObjectOptions{})
+    if err != nil {
+        return "", fmt.Errorf("file not found: %s", err.Error())
+    }
 
-	// Generate pre-signed URL
-	expiry := time.Hour * 24
-	url, err := s.minio_client.PresignedGetObject(context.Background(), "products", filename, expiry, nil)
-	if err != nil {
-		return "", fmt.Errorf("failed to get file: %s", err.Error())
-	}
+    expiry := time.Hour * 24
+    url, err := s.minio_client.PresignedGetObject(context.Background(), "products", filename, expiry, nil)
+    if err != nil {
+        return "", fmt.Errorf("failed to get file: %s", err.Error())
+    }
 
-	return url.String(), nil
+    finalURL := url.String()
+    log.Printf("Сгенерированный URL: %s", finalURL)
+    return finalURL, nil
 }
-
 func (s *FileStorage) DeleteFile(filename string) error {
 	// Check if the file exists before attempting deletion
 	_, err := s.minio_client.StatObject(context.Background(),"products", filename, minio.StatObjectOptions{})

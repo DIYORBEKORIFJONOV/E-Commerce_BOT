@@ -1,9 +1,12 @@
+version: '3.8'
+
 services:
   api_gateway:
     build: ./api_gateway
+    image: d1y0rbek/api_gateway:latest
     container_name: api_gateway
     ports:
-      - 8085:8083
+      - 8080:8080
     depends_on:
       orderservice:
         condition: service_started
@@ -11,17 +14,15 @@ services:
         condition: service_started
       mongo:
         condition: service_started
-      minio:
-        condition: service_healthy
     networks: 
-      - ecommerce  # Используем сеть хоста для доступа к localhost:9003
+      - ecommerce  
 
   orderservice:
     build: ./OrderServiceBot
+    image: d1y0rbek/orderservice:latest
     container_name: orderservice_container
-    image: orderservice_image
     ports:
-      - 8082:8082
+      - 8081:8081
     depends_on:
       - mongo
     networks:
@@ -29,10 +30,10 @@ services:
 
   product-service:
     build: ./product-service
+    image: d1y0rbek/product-service:latest
     container_name: product-service_container
-    image: product-service_image
     ports:
-      - 8081:8081
+      - 8082:8082
     depends_on:
       - mongo
     networks:
@@ -42,30 +43,9 @@ services:
     image: mongo:latest
     container_name: mongo_e_commerce
     ports:
-      - "27020:27017"
+      - "27017:27017"
     volumes:
       - mongo-db-data:/data/db
-    networks:
-      - ecommerce
-
-  minio:
-    image: minio/minio:latest
-    container_name: minio
-    restart: always
-    command: server /data --console-address ":9001"
-    environment:
-      - MINIO_ROOT_USER=admin
-      - MINIO_ROOT_PASSWORD=secretpass
-    volumes:
-      - minio-data:/data
-    ports:
-      - "9003:9000"
-      - "9001:9001"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]  # Обновлен порт для хоста
-      interval: 10s
-      timeout: 5s
-      retries: 3
     networks:
       - ecommerce
 
@@ -75,4 +55,3 @@ networks:
 
 volumes:
   mongo-db-data:
-  minio-data:

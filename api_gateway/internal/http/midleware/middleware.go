@@ -3,7 +3,6 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"time"
-	"net/http"
 )
 
 
@@ -17,28 +16,28 @@ func CorsMiddleware() gin.HandlerFunc {
 }
 
 
-func IPFilterMiddleware(allowedIPs []string) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		clientIP := c.ClientIP()
-		allowed := false
+// func IPFilterMiddleware(allowedIPs []string) gin.HandlerFunc {
+// 	return func(c *gin.Context) {
+// 		clientIP := c.ClientIP()
+// 		allowed := false
 
-		for _, ip := range allowedIPs {
-			if clientIP == ip {
-				allowed = true
-				break
-			}
-		}
+// 		for _, ip := range allowedIPs {
+// 			if clientIP == ip {
+// 				allowed = true
+// 				break
+// 			}
+// 		}
 
-		if !allowed {
-			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
-				"error": "Access denied for IP: " + clientIP,
-			})
-			return
-		}
+// 		if !allowed {
+// 			c.AbortWithStatusJSON(http.StatusForbidden, gin.H{
+// 				"error": "Access denied for IP: " + clientIP,
+// 			})
+// 			return
+// 		}
 
-		c.Next()
-	}
-}
+// 		c.Next()
+// 	}
+// }
 
 func TimingMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
