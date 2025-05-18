@@ -33,7 +33,7 @@ func Token() string {
 func NewConfig() (*Config, error) {
 	var config Config
 
-	config.APP = getEnv("APP", "USER-SERVICE")
+	config.APP = getEnv("APP", "USER_SERVICE")
 	config.GRPCPort = getEnv("RPC_PORT", "8083")
 
 	config.DB.Host = getEnv("POSTGRES_HOST", "localhost")

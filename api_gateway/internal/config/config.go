@@ -9,6 +9,7 @@ type Config struct {
 	AppPort string
 	OrderServicePort string
 	ProductServicePort string
+	UserServicePort string
 }
 
 
@@ -18,7 +19,7 @@ func NewConfig() (*Config, error) {
 	config.AppPort =getEnv("APP_PORT","")
 	config.OrderServicePort = getEnv("ORDER_PORT","")
 	config.ProductServicePort = getEnv("PRODUCT_ORDER","")
-
+	config.UserServicePort = getEnv("USER_SERVICE","")
 	return &config, nil
 }
 

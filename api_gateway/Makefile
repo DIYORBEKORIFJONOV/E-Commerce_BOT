@@ -23,6 +23,13 @@ gen-order:
 		--go-grpc_out=pkg/protos/gen \
 		--go-grpc_opt=paths=source_relative
 
+gen-user:
+	@protoc -I pkg/protos pkg/protos/user/user.proto \
+		--go_out=pkg/protos/gen \
+		--go_opt=paths=source_relative \
+		--go-grpc_out=pkg/protos/gen \
+		--go-grpc_opt=paths=source_relative
+
 # Initialize Swagger docs from your Swaggo comments
 # Initialize Swagger docs from your Swaggo comments
 swagger-init:

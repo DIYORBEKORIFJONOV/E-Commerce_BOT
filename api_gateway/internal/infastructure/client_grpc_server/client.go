@@ -6,6 +6,7 @@ import (
 	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/config"
 	orderproduct "github.com/diyorbek/E-Commerce_BOT/api_gateway/pkg/protos/gen/order"
 	productpb "github.com/diyorbek/E-Commerce_BOT/api_gateway/pkg/protos/gen/product"
+	usergen "github.com/diyorbek/E-Commerce_BOT/api_gateway/pkg/protos/gen/user"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -13,6 +14,7 @@ import (
 type ServiceClient interface {
 	OrderService() orderproduct.OrderServiceClient
 	ProductService() productpb.ProductServiceClient
+	UserService()  usergen.UserServiceClient
 	Close() error
 }
 
@@ -20,10 +22,10 @@ type serviceClient struct {
 	connection  []*grpc.ClientConn
 	orderService orderproduct.OrderServiceClient
 	productService  productpb.ProductServiceClient
+	userService usergen.UserServiceClient
 }
 
 func NewSerevice(cfg *config.Config) (ServiceClient,error) {
-	// log.Fatal(cfg.AppPort,cfg.OrderServicePort,cfg.ProductServicePort)
 	ColOrderService,err := grpc.NewClient(cfg.OrderServicePort,grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		
@@ -34,12 +36,17 @@ func NewSerevice(cfg *config.Config) (ServiceClient,error) {
 	if err != nil {
 		return nil,err
 	}
+	ColUserService,err := grpc.NewClient(cfg.UserServicePort,grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		return nil,err
+	}
 
 
 	return &serviceClient{
 		productService: productpb.NewProductServiceClient(ColProdductService),
 		orderService: orderproduct.NewOrderServiceClient(ColOrderService),
-		connection: []*grpc.ClientConn{ColOrderService,ColOrderService},
+		userService: usergen.NewUserServiceClient(ColUserService),
+		connection: []*grpc.ClientConn{ColOrderService,ColOrderService,ColUserService},
 	},nil
 }
 
@@ -47,6 +54,10 @@ func NewSerevice(cfg *config.Config) (ServiceClient,error) {
 func (s *serviceClient)OrderService() orderproduct.OrderServiceClient{
 	return s.orderService
 }
+func (s *serviceClient)UserService()  usergen.UserServiceClient{
+	return s.userService
+}
+
 
 
 func (s *serviceClient)ProductService() productpb.ProductServiceClient {
