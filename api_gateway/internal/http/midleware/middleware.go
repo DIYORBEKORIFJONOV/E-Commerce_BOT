@@ -8,12 +8,20 @@ import (
 
 func CorsMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
-		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE")
+		c.Writer.Header().Set("Access-Control-Allow-Origin", "http://localhost:5173")
+		c.Writer.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
 		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization")
+
+		if c.Request.Method == "OPTIONS" {
+			// Завершаем обработку и возвращаем OK для preflight
+			c.AbortWithStatus(204)
+			return
+		}
+
 		c.Next()
 	}
 }
+
 
 
 // func IPFilterMiddleware(allowedIPs []string) gin.HandlerFunc {

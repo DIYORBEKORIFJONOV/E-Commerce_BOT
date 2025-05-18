@@ -1137,7 +1137,7 @@ const docTemplate = `{
                 "count": {
                     "type": "integer"
                 },
-                "product": {
+                "products": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.Product"

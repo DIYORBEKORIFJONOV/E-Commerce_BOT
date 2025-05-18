@@ -50,22 +50,22 @@ func RegisterRouter(
     // Products
     products := r.Group("/products")
     {
-        products.POST("/", productHandler.CreateProduct)
+        products.POST("", productHandler.CreateProduct)
         products.POST("/addmodel", productHandler.AddModel)
         products.PUT("/name", productHandler.UpdateProductName)
         products.GET("/main", productHandler.GetMainProduct)
-        products.GET("/", productHandler.GetAllProduct)
-        products.PATCH("/", productHandler.UpdateProduct)
-        products.DELETE("/", productHandler.DeleteProduct)
+        products.GET("", productHandler.GetAllProduct)
+        products.PATCH("", productHandler.UpdateProduct)
+        products.DELETE("", productHandler.DeleteProduct)
     }
 
     // Categories
     categories := r.Group("/products/categories")
     {
-        categories.POST("/", productHandler.CreateCategory)
-        categories.GET("/", productHandler.GetAllCategory)
-        categories.PUT("/", productHandler.UpdateCategory)
-        categories.DELETE("/", productHandler.DeleteCategory)
+        categories.POST("", productHandler.CreateCategory)
+        categories.GET("", productHandler.GetAllCategory)
+        categories.PUT("", productHandler.UpdateCategory)
+        categories.DELETE("", productHandler.DeleteCategory)
     }
 
     return r

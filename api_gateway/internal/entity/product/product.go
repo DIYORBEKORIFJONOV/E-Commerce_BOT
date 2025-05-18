@@ -51,7 +51,7 @@ type (
 	}
 
 	GetProductsRes struct {
-		Products []Product `json:"product"`
+		Products []Product `json:"products"`
 		Count    int64     `json:"count"`
 	}
 
