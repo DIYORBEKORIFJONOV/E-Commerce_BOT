@@ -1,46 +1,46 @@
 package main
 
-import (
-	"log"
-	"os"
-	"path/filepath"
+// import (
+// 	"log"
+// 	"os"
+// 	"path/filepath"
 
-	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/app"
-	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/config"
-	"github.com/diyorbek/E-Commerce_BOT/api_gateway/logger"
-	"github.com/joho/godotenv"
-)
+// 	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/app"
+// 	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/config"
+// 	"github.com/diyorbek/E-Commerce_BOT/api_gateway/logger"
+// 	"github.com/joho/godotenv"
+// )
 
-func main() {
+// func main() {
 	
-	rootPath, err := filepath.Abs(".")
-	if err != nil {
-		log.Fatalf("❌ Ошибка получения текущего пути: %v", err)
-	}
+// 	rootPath, err := filepath.Abs(".")
+// 	if err != nil {
+// 		log.Fatalf("❌ Ошибка получения текущего пути: %v", err)
+// 	}
 
-	envPath := filepath.Join(rootPath, ".env")
+// 	envPath := filepath.Join(rootPath, ".env")
 
 	
-	if err := godotenv.Load(envPath); err != nil {
-		log.Printf("⚠️ .env файл не найден по пути %s, продолжаем с переменными окружения", envPath)
-	}
+// 	if err := godotenv.Load(envPath); err != nil {
+// 		log.Printf("⚠️ .env файл не найден по пути %s, продолжаем с переменными окружения", envPath)
+// 	}
 
-	log.Println("DEBUG: REPLY_TIMEOUT =", os.Getenv("REPLY_TIMEOUT"))
+// 	log.Println("DEBUG: REPLY_TIMEOUT =", os.Getenv("REPLY_TIMEOUT"))
 
-	// Конфигурация
-	cfg, err := config.NewConfig()
-	if err != nil {
-		log.Fatalf("❌ Ошибка инициализации конфигурации: %v", err)
-	}
+// 	// Конфигурация
+// 	cfg, err := config.NewConfig()
+// 	if err != nil {
+// 		log.Fatalf("❌ Ошибка инициализации конфигурации: %v", err)
+// 	}
 
-	// Логгер
-	lg := logger.SetupLogger("local")
+// 	// Логгер
+// 	lg := logger.SetupLogger("local")
 
-	// Приложение
-	application := app.NewApp(lg, cfg)
+// 	// Приложение
+// 	application := app.NewApp(lg, cfg)
 
-	// HTTP-сервер
-	go application.HTTPApp.Start()
+// 	// HTTP-сервер
+// 	go application.HTTPApp.Start()
 
-	select {} // бесконечное ожидание
-}
+// 	select {} // бесконечное ожидание
+// }

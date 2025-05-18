@@ -1,0 +1,2 @@
+{"level":"info","operation":"service.CreateUserReq","userId":"a6618f46-e973-429c-8bc7-fdca5aea7bc0","email":"diyordev3@gmail.com","time":"2025-01-08T00:01:22+05:00","message":"starting to save the user to the database"}
+{"level":"info","operation":"service.CreateUserReq","userId":"a6618f46-e973-429c-8bc7-fdca5aea7bc0","email":"diyordev3@gmail.com","time":"2025-01-08T00:01:22+05:00","message":"user successfully saved to the database"}
