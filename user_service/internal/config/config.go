@@ -34,7 +34,7 @@ func NewConfig() (*Config, error) {
 	var config Config
 
 	config.APP = getEnv("APP", "USER-SERVICE")
-	config.GRPCPort = getEnv("RPC_PORT", "9000")
+	config.GRPCPort = getEnv("RPC_PORT", "8083")
 
 	config.DB.Host = getEnv("POSTGRES_HOST", "localhost")
 	config.DB.Port = getEnv("POSTGRES_PORT", "5432")
