@@ -1,0 +1,69 @@
+syntax="proto3";
+option go_package = "/.Account";
+
+service AccountService {
+  rpc CreateAccount(CreateAccountRequest) returns (CreateAccountResponse);
+  rpc GetAccount(GetAccountRequest) returns (GetAccountResponse);
+  rpc Login(LoginRequest) returns(GetAccountResponse);
+  rpc ChangePassword(ChangePasswordRequest) returns (ChangePasswordResponse);
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+  rpc UserExists(UserExistsRequest) returns (UserExistsResponse);
+}
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+message Account  {
+  string account_id = 1;
+  string name = 2;
+  string phone = 3;
+  string username = 4;
+  string password = 5;
+  string role = 6;
+}
+
+message CreateAccountRequest {
+  string name = 1;
+  string phone = 2;
+  string username = 3;
+  string password = 4;
+  string role = 5;
+}
+
+message CreateAccountResponse {
+  Account account = 1;
+}
+
+message GetAccountRequest {
+  string account_id = 1;
+}
+
+message GetAccountResponse {
+  Account account = 1;
+}
+
+message ChangePasswordRequest {
+  string account_id = 1;
+  string new_password = 2;
+}
+
+message ChangePasswordResponse {
+  bool changed = 1;
+}
+
+message DeleteUserRequest {
+  string account_id  = 1;
+}
+
+message DeleteUserResponse {
+  bool deleted = 1;
+}
+
+message UserExistsRequest {
+  string phone = 1;
+}
+
+message UserExistsResponse {
+  bool exists = 1;
+}

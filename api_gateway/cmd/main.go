@@ -1,46 +1,52 @@
 package main
 
-// import (
-// 	"log"
-// 	"os"
-// 	"path/filepath"
+import (
+	"log"
+	"os"
+	"path/filepath"
 
-// 	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/app"
-// 	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/config"
-// 	"github.com/diyorbek/E-Commerce_BOT/api_gateway/logger"
-// 	"github.com/joho/godotenv"
-// )
+	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/app"
+	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/config"
+	"github.com/diyorbek/E-Commerce_BOT/api_gateway/logger"
+	"github.com/joho/godotenv"
+)
 
-// func main() {
-	
-// 	rootPath, err := filepath.Abs(".")
-// 	if err != nil {
-// 		log.Fatalf("❌ Ошибка получения текущего пути: %v", err)
-// 	}
+// @title Artisan Connect
+// @version 1.0
+// @description This is a sample server for a restaurant reservation system.
+// @host hurmomarketshop.duckdns.org
+// @BasePath        /
+// @schemes         https
+// @securityDefinitions.apiKey ApiKeyAuth
+// @in              header
+// @name            Authorization
 
-// 	envPath := filepath.Join(rootPath, ".env")
+func main() {
 
-	
-// 	if err := godotenv.Load(envPath); err != nil {
-// 		log.Printf("⚠️ .env файл не найден по пути %s, продолжаем с переменными окружения", envPath)
-// 	}
+	rootPath, err := filepath.Abs(".")
+	if err != nil {
+		log.Fatalf("❌ Ошибка получения текущего пути: %v", err)
+	}
 
-// 	log.Println("DEBUG: REPLY_TIMEOUT =", os.Getenv("REPLY_TIMEOUT"))
+	envPath := filepath.Join(rootPath, ".env")
 
-// 	// Конфигурация
-// 	cfg, err := config.NewConfig()
-// 	if err != nil {
-// 		log.Fatalf("❌ Ошибка инициализации конфигурации: %v", err)
-// 	}
+	if err := godotenv.Load(envPath); err != nil {
+		log.Printf("⚠️ .env файл не найден по пути %s, продолжаем с переменными окружения", envPath)
+	}
 
-// 	// Логгер
-// 	lg := logger.SetupLogger("local")
+	log.Println("DEBUG: REPLY_TIMEOUT =", os.Getenv("REPLY_TIMEOUT"))
 
-// 	// Приложение
-// 	application := app.NewApp(lg, cfg)
+	// Конфигурация
+	cfg, err := config.NewConfig()
+	if err != nil {
+		log.Fatalf("❌ Ошибка инициализации конфигурации: %v", err)
+	}
 
-// 	// HTTP-сервер
-// 	go application.HTTPApp.Start()
+	lg := logger.SetupLogger("local")
 
-// 	select {} // бесконечное ожидание
-// }
+	application := app.NewApp(lg, cfg)
+
+	go application.HTTPApp.Start()
+
+	select {}
+}

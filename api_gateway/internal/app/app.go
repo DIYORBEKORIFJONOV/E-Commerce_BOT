@@ -2,6 +2,10 @@ package app
 
 import (
 	"context"
+	redisCash "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/infastructure/redis"
+	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/service/auth"
+	authusecase "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/usecase/auth"
+	"github.com/diyorbek/E-Commerce_BOT/api_gateway/until"
 	"log"
 	"log/slog"
 
@@ -17,6 +21,11 @@ import (
 	productusecase "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/usecase/product"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
+)
+
+const (
+	authURL = "https://notify.eskiz.uz/api/auth/login"
+	smsURL  = "https://notify.eskiz.uz/api/message/sms/send"
 )
 
 type App struct {
@@ -36,16 +45,14 @@ func NewApp(logger *slog.Logger, cfg *config.Config) *App {
 	serviceOrder := orderservice.NewOrderService(addJustReq, addJustRes, &clientGrpc)
 	orderServiceIml := usecaseorder.NewOrderService(serviceOrder)
 
-	
 	minioClient, err := minio.New("hurmomarkershoppicture.duckdns.org", &minio.Options{
-    Creds:  credentials.NewStaticV4("minioadmin", "minioadmin", ""),
-    Secure: true,
-})
+		Creds:  credentials.NewStaticV4("minioadmin", "minioadmin", ""),
+		Secure: true,
+	})
 	if err != nil {
-    	log.Fatalf("Ошибка инициализации клиента MinIO: %v", err)
+		log.Fatalf("Ошибка инициализации клиента MinIO: %v", err)
 	}
 	log.Println("✅ Клиент MinIO успешно инициализирован")
-
 
 	log.Println("✅ Соединение с MinIO успешно")
 
@@ -58,9 +65,12 @@ func NewApp(logger *slog.Logger, cfg *config.Config) *App {
 	// Product Service
 	serviceProduct := product_service.NewProductReqService(&clientGrpc)
 	serviceProductIml := productusecase.NewProductUsage(serviceProduct)
-
+	phoneSetting := until.NewPhoneSetting(authURL, smsURL, cfg.EskizEmail, cfg.EskizSenderId, cfg.EskizPassword)
+	redisSetting := redisCash.NewRedis(*cfg)
+	serviceAuth := auth.NewAuthService(redisSetting, phoneSetting, clientGrpc)
+	serviceIml := authusecase.NewAuthUseCaseIml(serviceAuth)
 	// HTTP сервер
-	server := htppapp.NewApp(logger, cfg.AppPort, orderServiceIml, minClient, serviceProductIml)
+	server := htppapp.NewApp(logger, cfg.AppPort, orderServiceIml, minClient, serviceProductIml, *serviceIml)
 	return &App{
 		HTTPApp: server,
 	}

@@ -28,6 +28,16 @@ func NewProductHandler(
 	}
 }
 
+// @title Artisan Connect
+// @version 1.0
+// @description This is a sample server for a restaurant reservation system.
+// @host hurmomarketshop.duckdns.org
+// @BasePath        /
+// @schemes         https
+// @securityDefinitions.apiKey ApiKeyAuth
+// @in              header
+// @name            Authorization
+
 // CreateProduct godoc
 // @Summary      Create a new product
 // @Description  Создаёт новый продукт на основе JSON-запроса
@@ -66,6 +76,7 @@ func (p *ProductHandler) CreateProduct(c *gin.Context) {
 // @Param        price          formData number false "Price"
 // @Param        quantity       formData int    false "Quantity"
 // @Param        photo          formData file   true  "Photo file"
+// @Security ApiKeyAuth
 // @Success      201 {object} productentity.Product  "Созданный товар"
 // @Failure      400 {object} productentity.ErrorResponse          "Некорректный запрос"
 // @Failure      500 {object} productentity.ErrorResponse          "Ошибка сервера"
@@ -136,6 +147,7 @@ func (p *ProductHandler) AddModel(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        payload  body      productentity.UpdateNameReq         true  "Update payload"
+// @Security ApiKeyAuth
 // @Success      200      {object}  productentity.GeneralResponseProduct "Updated"
 // @Failure      400      {object}  productentity.ErrorResponse         "Bad Request"
 // @Failure      500      {object}  productentity.ErrorResponse         "Internal Server Error"
@@ -162,6 +174,7 @@ func (p *ProductHandler) UpdateProductName(c *gin.Context) {
 // @Produce      json
 // @Param        field  query     string  false  "Filter/sort field"  example(name)
 // @Param        value   query     string     false  "Page number"        example(1)
+// @Security ApiKeyAuth
 // @Success      200    {array}   productentity.ProductMain
 // @Failure      500    {object}  productentity.ErrorResponse
 // @Router       /products/main [get]
@@ -186,6 +199,7 @@ func (p *ProductHandler) GetMainProduct(c *gin.Context) {
 // @Param        value   query     string  false  "Значение для фильтра"
 // @Param        page    query     int     false  "Номер страницы"   default(1)
 // @Param        limit   query     int     false  "Размер страницы"  default(10)
+// @Security ApiKeyAuth
 // @Success      200     {object}  productentity.GetProductsRes   "Список продуктов"
 // @Failure      400     {object}  productentity.ErrorResponse     "Неверный запрос"
 // @Failure      500     {object}  productentity.ErrorResponse     "Внутренняя ошибка сервера"
@@ -237,6 +251,7 @@ func (p *ProductHandler) GetAllProduct(c *gin.Context) {
 // @Param        category     formData string false "Category"
 // @Param        description  formData string false "Description"
 // @Param        photo        formData file   false "Photo file"
+// @Security ApiKeyAuth
 // @Success      200          {object} productentity.Product        "Updated"
 // @Failure      400          {object} productentity.ErrorResponse  "Bad Request"
 // @Failure      500          {object} productentity.ErrorResponse  "Internal Server Error"
@@ -276,6 +291,7 @@ func (p *ProductHandler) UpdateProduct(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        payload  body      productentity.DeleteProductReq      true  "Delete payload"
+// @Security ApiKeyAuth
 // @Success      200      {object}  productentity.GeneralResponseProduct "Deleted"
 // @Failure      400      {object}  productentity.ErrorResponse          "Bad Request"
 // @Failure      500      {object}  productentity.ErrorResponse          "Internal Server Error"
@@ -301,6 +317,7 @@ func (p *ProductHandler) DeleteProduct(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        payload  body      productentity.CreateCategoryReq   true  "Category payload"
+// @Security ApiKeyAuth
 // @Success      200      {object}  productentity.GeneralResponseProduct "Created"
 // @Failure      400      {object}  productentity.ErrorResponse          "Bad Request"
 // @Failure      500      {object}  productentity.ErrorResponse          "Internal Server Error"
@@ -325,6 +342,7 @@ func (p *ProductHandler) CreateCategory(c *gin.Context) {
 // @Tags         categories
 // @Accept       json
 // @Produce      json
+// @Security ApiKeyAuth
 // @Success      200  {array}   productentity.GetcategoriesRes    "Categories list"
 // @Failure      500  {object}  productentity.ErrorResponse       "Internal Server Error"
 // @Router       /products/categories [get]
@@ -344,6 +362,7 @@ func (p *ProductHandler) GetAllCategory(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        payload  body      productentity.UpdateCategoryReq   true  "Update payload"
+// @Security ApiKeyAuth
 // @Success      200      {object}  productentity.GeneralResponseProduct "Updated"
 // @Failure      400      {object}  productentity.ErrorResponse          "Bad Request"
 // @Failure      500      {object}  productentity.ErrorResponse          "Internal Server Error"
@@ -369,6 +388,7 @@ func (p *ProductHandler) UpdateCategory(c *gin.Context) {
 // @Accept       json
 // @Produce      json
 // @Param        payload  body      productentity.DeleteCategoryReq   true  "Delete payload"
+// @Security ApiKeyAuth
 // @Success      200      {object}  productentity.GeneralResponseProduct "Deleted"
 // @Failure      400      {object}  productentity.ErrorResponse          "Bad Request"
 // @Failure      500      {object}  productentity.ErrorResponse          "Internal Server Error"

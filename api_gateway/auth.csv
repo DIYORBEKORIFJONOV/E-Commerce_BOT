@@ -1,0 +1,55 @@
+# Casbin policy rules (CSV format)
+# p, sub, obj, act
+
+# Swagger
+p, unauthorized, /swagger/*, GET
+
+# Auth (unauthorized)
+p, unauthorized, /auth/register, POST
+p, unauthorized, /auth/verify, POST
+p, unauthorized, /auth/login, POST
+
+# Auth (authorized user)
+p, user, /auth, GET
+p, user, /auth, POST
+p, user, /auth, PUT
+p, user, /auth, DELETE
+p, user, /auth/*, GET
+p, user, /auth/*, POST
+p, user, /auth/*, PUT
+p, user, /auth/*, DELETE
+
+# Orders
+p, user, /orders, GET
+p, user, /orders, POST
+p, user, /orders, PUT
+p, user, /orders, DELETE
+p, user, /orders/*, GET
+p, user, /orders/*, POST
+p, user, /orders/*, PUT
+p, user, /orders/*, DELETE
+
+# Carts
+p, user, /carts, GET
+p, user, /carts, POST
+p, user, /carts, PUT
+p, user, /carts, DELETE
+p, user, /carts/*, GET
+p, user, /carts/*, POST
+p, user, /carts/*, PUT
+p, user, /carts/*, DELETE
+
+# Products
+p, user, /products, GET
+p, user, /products, POST
+p, user, /products, PUT
+p, user, /products, PATCH
+p, user, /products, DELETE
+p, user, /products/*, GET
+p, user, /products/*, POST
+p, user, /products/*, PUT
+p, user, /products/*, PATCH
+p, user, /products/*, DELETE
+
+
+p, user, /account/*, (.*)

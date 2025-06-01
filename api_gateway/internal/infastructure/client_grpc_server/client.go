@@ -4,9 +4,9 @@ import (
 	"log"
 
 	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/config"
+	accountgen "github.com/diyorbek/E-Commerce_BOT/api_gateway/pkg/protos/gen/account"
 	orderproduct "github.com/diyorbek/E-Commerce_BOT/api_gateway/pkg/protos/gen/order"
 	productpb "github.com/diyorbek/E-Commerce_BOT/api_gateway/pkg/protos/gen/product"
-	usergen "github.com/diyorbek/E-Commerce_BOT/api_gateway/pkg/protos/gen/user"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 )
@@ -14,56 +14,51 @@ import (
 type ServiceClient interface {
 	OrderService() orderproduct.OrderServiceClient
 	ProductService() productpb.ProductServiceClient
-	UserService()  usergen.UserServiceClient
+	AccountService() accountgen.AccountServiceClient
 	Close() error
 }
 
 type serviceClient struct {
-	connection  []*grpc.ClientConn
-	orderService orderproduct.OrderServiceClient
-	productService  productpb.ProductServiceClient
-	userService usergen.UserServiceClient
+	connection     []*grpc.ClientConn
+	orderService   orderproduct.OrderServiceClient
+	productService productpb.ProductServiceClient
+	userService    accountgen.AccountServiceClient
 }
 
-func NewSerevice(cfg *config.Config) (ServiceClient,error) {
-	ColOrderService,err := grpc.NewClient(cfg.OrderServicePort,grpc.WithTransportCredentials(insecure.NewCredentials()))
+func NewSerevice(cfg *config.Config) (ServiceClient, error) {
+	ColOrderService, err := grpc.NewClient(cfg.OrderServicePort, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		
-		return nil,err
+
+		return nil, err
 	}
 
-	ColProdductService,err := grpc.NewClient(cfg.ProductServicePort,grpc.WithTransportCredentials(insecure.NewCredentials()))
+	ColProdductService, err := grpc.NewClient(cfg.ProductServicePort, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
-	ColUserService,err := grpc.NewClient(cfg.UserServicePort,grpc.WithTransportCredentials(insecure.NewCredentials()))
+	ColAccountService, err := grpc.NewClient(cfg.AccountServicePort, grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
-
 
 	return &serviceClient{
 		productService: productpb.NewProductServiceClient(ColProdductService),
-		orderService: orderproduct.NewOrderServiceClient(ColOrderService),
-		userService: usergen.NewUserServiceClient(ColUserService),
-		connection: []*grpc.ClientConn{ColOrderService,ColOrderService,ColUserService},
-	},nil
+		orderService:   orderproduct.NewOrderServiceClient(ColOrderService),
+		userService:    accountgen.NewAccountServiceClient(ColAccountService),
+		connection:     []*grpc.ClientConn{ColOrderService, ColOrderService, ColAccountService},
+	}, nil
 }
 
-
-func (s *serviceClient)OrderService() orderproduct.OrderServiceClient{
+func (s *serviceClient) OrderService() orderproduct.OrderServiceClient {
 	return s.orderService
 }
-func (s *serviceClient)UserService()  usergen.UserServiceClient{
+func (s *serviceClient) AccountService() accountgen.AccountServiceClient {
 	return s.userService
 }
 
-
-
-func (s *serviceClient)ProductService() productpb.ProductServiceClient {
+func (s *serviceClient) ProductService() productpb.ProductServiceClient {
 	return s.productService
 }
-
 
 func (s *serviceClient) Close() error {
 	var err error
@@ -75,5 +70,3 @@ func (s *serviceClient) Close() error {
 	}
 	return err
 }
-
-

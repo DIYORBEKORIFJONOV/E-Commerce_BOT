@@ -1,6 +1,7 @@
 package htppapp
 
 import (
+	authusecase "github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/usecase/auth"
 	"log/slog"
 
 	"github.com/diyorbek/E-Commerce_BOT/api_gateway/internal/http/router"
@@ -16,8 +17,11 @@ type App struct {
 	Server *gin.Engine
 }
 
-func NewApp(logger *slog.Logger, port string, botIml *usecaseorder.OrderUseCaseIml,minioPhoto *minao1.FileStorage,productUsceIml *productusecase.ProductUseCaseIml) *App {
-	sever := router.RegisterRouter(botIml,productUsceIml,minioPhoto)
+func NewApp(logger *slog.Logger, port string,
+	botIml *usecaseorder.OrderUseCaseIml,
+	minioPhoto *minao1.FileStorage,
+	productUsceIml *productusecase.ProductUseCaseIml, authIML authusecase.AuthUseCaseIml) *App {
+	sever := router.RegisterRouter(botIml, productUsceIml, minioPhoto, authIML)
 	return &App{
 		Port:   port,
 		Server: sever,

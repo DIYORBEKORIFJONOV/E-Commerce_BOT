@@ -14,6 +14,8 @@ FROM alpine:latest
 WORKDIR /app
 
 COPY .env .env
+COPY auth.conf auth.conf
+COPY auth.csv auth.csv
 
 COPY --from=builder /app/main .
 
