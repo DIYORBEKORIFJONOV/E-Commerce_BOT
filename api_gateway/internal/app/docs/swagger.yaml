@@ -1,0 +1,1007 @@
+basePath: /
+definitions:
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_auth.ChangePasswordRequest:
+    properties:
+      new_password:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_auth.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_auth.RegisterForm:
+    properties:
+      name:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      username:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_auth.RegisterResponse:
+    properties:
+      already_exists:
+        type: boolean
+      sent:
+        type: boolean
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_auth.VerifyRequest:
+    properties:
+      phone:
+        type: string
+      secret:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.AddProducts2Cart:
+    properties:
+      productId:
+        type: string
+      quantity:
+        type: integer
+      userId:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Cart:
+    properties:
+      products:
+        items:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ProductOrder'
+        type: array
+      totalPrice:
+        type: number
+      userId:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.CreateOrderReq:
+    properties:
+      comment:
+        type: string
+      contactNumber:
+        type: string
+      cordination:
+        $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Location'
+      userId:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.DeleteProductsfromCartReq:
+    properties:
+      productId:
+        type: string
+      userId:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse:
+    properties:
+      error:
+        example: invalid request
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GeneralOrderResponse:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GetAllOrdersRes:
+    properties:
+      orders:
+        items:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Order'
+        type: array
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GetCartReq:
+    properties:
+      userId:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Location:
+    properties:
+      latitude:
+        type: string
+      longtitude:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Order:
+    properties:
+      cartId:
+        $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Cart'
+      comment:
+        type: string
+      contactNumber:
+        type: string
+      cordination:
+        $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Location'
+      createdat:
+        type: string
+      orderId:
+        type: string
+      status:
+        type: string
+      updatedat:
+        type: string
+      userId:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ProductOrder:
+    properties:
+      price:
+        type: number
+      productId:
+        type: string
+      quantity:
+        type: integer
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.UpdateCartReq:
+    properties:
+      productId:
+        type: string
+      quantity:
+        type: integer
+      userId:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.UpdateOrderReq:
+    properties:
+      orderId:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.CreateCategoryReq:
+    properties:
+      category:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.CreateProductReq:
+    properties:
+      category:
+        type: string
+      name:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.DeleteCategoryReq:
+    properties:
+      category:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.DeleteProductReq:
+    properties:
+      is_deleted:
+        type: boolean
+      productId:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse:
+    properties:
+      error:
+        example: invalid request
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GetProductsRes:
+    properties:
+      count:
+        type: integer
+      products:
+        items:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.Product'
+        type: array
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GetcategoriesRes:
+    properties:
+      category:
+        items:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.CreateCategoryReq'
+        type: array
+      count:
+        type: integer
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.Product:
+    properties:
+      colour:
+        type: string
+      createdat:
+        type: string
+      description:
+        type: string
+      mainproductId:
+        type: string
+      photourl:
+        type: string
+      price:
+        type: number
+      productId:
+        type: string
+      quantity:
+        type: integer
+      size:
+        type: integer
+      updatedat:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ProductMain:
+    properties:
+      category:
+        type: string
+      mainproductId:
+        type: string
+      name:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.UpdateCategoryReq:
+    properties:
+      category:
+        type: string
+      newcategory:
+        type: string
+    type: object
+  github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.UpdateNameReq:
+    properties:
+      name:
+        type: string
+      newname:
+        type: string
+    type: object
+host: hurmomarketshop.duckdns.org
+info:
+  contact: {}
+  description: This is a sample server for a restaurant reservation system.
+  title: Artisan Connect
+  version: "1.0"
+paths:
+  /account/update-password:
+    put:
+      consumes:
+      - application/json
+      description: изменит пароль пользователя
+      parameters:
+      - description: Login request
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_auth.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный изменения
+          schema:
+            type: string
+        "400":
+          description: Ошибка валидации
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Login user
+      tags:
+      - account
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Авторизация пользователя
+      parameters:
+      - description: Login request
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_auth.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешный вход
+          schema:
+            type: string
+        "400":
+          description: Ошибка валидации
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+      summary: Login user
+      tags:
+      - auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Регистрация нового пользователя
+      parameters:
+      - description: Register form
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_auth.RegisterForm'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: response
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_auth.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+      summary: Retrieve all orders
+      tags:
+      - auth
+  /auth/verify:
+    post:
+      consumes:
+      - application/json
+      description: Подтверждение аккаунта по коду (например, OTP)
+      parameters:
+      - description: Verification request
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_auth.VerifyRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Успешная верификация
+          schema:
+            type: string
+        "400":
+          description: Ошибка валидации
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+      summary: Verify user account
+      tags:
+      - auth
+  /carts:
+    delete:
+      consumes:
+      - application/json
+      description: Очищает корзину
+      parameters:
+      - description: User payload
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GetCartReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Deleted
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GeneralOrderResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a user's cart
+      tags:
+      - Cart
+    get:
+      consumes:
+      - application/json
+      description: Получает содержимое корзины
+      parameters:
+      - description: User ID
+        in: query
+        name: userId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Contents
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Cart'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get cart details
+      tags:
+      - Cart
+    put:
+      consumes:
+      - application/json
+      description: Обновляет корзину
+      parameters:
+      - description: Update payload
+        in: body
+        name: update
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.UpdateCartReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Cart'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update cart contents
+      tags:
+      - Cart
+  /carts/add/product:
+    post:
+      consumes:
+      - application/json
+      description: Добавляет товары в корзину
+      parameters:
+      - description: Items payload
+        in: body
+        name: items
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.AddProducts2Cart'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GeneralOrderResponse'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Add products to cart
+      tags:
+      - Cart
+  /carts/product:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет указанные товары из корзины
+      parameters:
+      - description: Items payload
+        in: body
+        name: items
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.DeleteProductsfromCartReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Cart'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Remove specific products from cart
+      tags:
+      - Cart
+  /orders/completed:
+    put:
+      consumes:
+      - application/json
+      description: Помечает заказ как завершённый
+      parameters:
+      - description: Update payload
+        in: body
+        name: status
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.UpdateOrderReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Order'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Mark an order as completed
+      tags:
+      - Orders
+  /orders/create:
+    post:
+      consumes:
+      - application/json
+      description: Создаёт новый заказ
+      parameters:
+      - description: Order payload
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.CreateOrderReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.Order'
+        "403":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new order
+      tags:
+      - Orders
+  /orders/getall:
+    get:
+      consumes:
+      - application/json
+      description: Возвращает список заказов
+      parameters:
+      - description: Filter by customer ID
+        in: query
+        name: userId
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.GetAllOrdersRes'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_order.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Retrieve all orders
+      tags:
+      - Orders
+  /products:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет продукт по ID
+      parameters:
+      - description: Delete payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.DeleteProductReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Deleted
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete an existing product
+      tags:
+      - products
+    get:
+      consumes:
+      - application/json
+      description: Получить список продуктов с фильтрацией и пагинацией
+      parameters:
+      - description: Поле для фильтра (name, category)
+        in: query
+        name: field
+        type: string
+      - description: Значение для фильтра
+        in: query
+        name: value
+        type: string
+      - default: 1
+        description: Номер страницы
+        in: query
+        name: page
+        type: integer
+      - default: 10
+        description: Размер страницы
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Список продуктов
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GetProductsRes'
+        "400":
+          description: Неверный запрос
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+        "500":
+          description: Внутренняя ошибка сервера
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Список продуктов
+      tags:
+      - products
+    patch:
+      consumes:
+      - multipart/form-data
+      description: Обновляет продукт (multipart/form-data). Фото обновляется, если
+        есть.
+      parameters:
+      - description: Product ID
+        in: formData
+        name: id
+        required: true
+        type: string
+      - description: Name
+        in: formData
+        name: name
+        type: string
+      - description: Category
+        in: formData
+        name: category
+        type: string
+      - description: Description
+        in: formData
+        name: description
+        type: string
+      - description: Photo file
+        in: formData
+        name: photo
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.Product'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Partially update product
+      tags:
+      - products
+    post:
+      consumes:
+      - application/json
+      description: Создаёт новый продукт на основе JSON-запроса
+      parameters:
+      - description: Product payload
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.CreateProductReq'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.Product'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      summary: Create a new product
+      tags:
+      - products
+  /products/addmodel:
+    post:
+      consumes:
+      - multipart/form-data
+      description: 'Принимает form-data: все поля AddModelReq + файл photo'
+      parameters:
+      - description: MainProductId
+        in: formData
+        name: mainproductId
+        required: true
+        type: string
+      - description: Description
+        in: formData
+        name: description
+        type: string
+      - description: Colour
+        in: formData
+        name: colour
+        type: string
+      - description: Size
+        in: formData
+        name: size
+        type: integer
+      - description: Price
+        in: formData
+        name: price
+        type: number
+      - description: Quantity
+        in: formData
+        name: quantity
+        type: integer
+      - description: Photo file
+        in: formData
+        name: photo
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Созданный товар
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.Product'
+        "400":
+          description: Некорректный запрос
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+        "500":
+          description: Ошибка сервера
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Добавляет модель товара с фото
+      tags:
+      - products
+  /products/categories:
+    delete:
+      consumes:
+      - application/json
+      description: Удаляет категорию по ID
+      parameters:
+      - description: Delete payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.DeleteCategoryReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Deleted
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a category
+      tags:
+      - categories
+    get:
+      consumes:
+      - application/json
+      description: Возвращает список всех категорий
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Categories list
+          schema:
+            items:
+              $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GetcategoriesRes'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Retrieve all categories
+      tags:
+      - categories
+    post:
+      consumes:
+      - application/json
+      description: Создаёт категорию
+      parameters:
+      - description: Category payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.CreateCategoryReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Created
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create a new category
+      tags:
+      - categories
+    put:
+      consumes:
+      - application/json
+      description: Обновляет категорию
+      parameters:
+      - description: Update payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.UpdateCategoryReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update an existing category
+      tags:
+      - categories
+  /products/main:
+    get:
+      consumes:
+      - application/json
+      description: Получает список основных продуктов. Поддерживает фильтрацию и пагинацию.
+      parameters:
+      - description: Filter/sort field
+        example: name
+        in: query
+        name: field
+        type: string
+      - description: Page number
+        example: "1"
+        in: query
+        name: value
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ProductMain'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get list of main products
+      tags:
+      - products
+  /products/name:
+    put:
+      consumes:
+      - application/json
+      description: Обновляет название продукта по ID
+      parameters:
+      - description: Update payload
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.UpdateNameReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Updated
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.GeneralResponseProduct'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/github_com_diyorbek_E-Commerce_BOT_api_gateway_internal_entity_product.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Update product name
+      tags:
+      - products
+schemes:
+- https
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
